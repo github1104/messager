@@ -1,0 +1,75 @@
+[debug] [2020-08-27T14:42:46.134Z] ----------------------------------------------------------------------
+[debug] [2020-08-27T14:42:46.149Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Admin\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2020-08-27T14:42:46.150Z] CLI Version:   8.9.0
+[debug] [2020-08-27T14:42:46.150Z] Platform:      win32
+[debug] [2020-08-27T14:42:46.150Z] Node Version:  v10.15.3
+[debug] [2020-08-27T14:42:46.160Z] Time:          Thu Aug 27 2020 21:42:46 GMT+0700 (Indochina Time)
+[debug] [2020-08-27T14:42:46.160Z] ----------------------------------------------------------------------
+[debug] [2020-08-27T14:42:46.161Z] 
+[debug] [2020-08-27T14:42:46.207Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-08-27T14:42:46.209Z] > authorizing via signed-in user
+[debug] [2020-08-27T14:42:46.209Z] [iam] checking project messenger-clone-afef7 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2020-08-27T14:42:46.219Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/messenger-clone-afef7:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2020-08-27T14:42:47.335Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Thu, 27 Aug 2020 14:42:47 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=825","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-08-27T14:42:47.342Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/messenger-clone-afef7  
+ 
+[debug] [2020-08-27T14:42:47.664Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Thu, 27 Aug 2020 14:42:48 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+[info] === Deploying to 'messenger-clone-afef7'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2020-08-27T14:42:47.701Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/messenger-clone-afef7/versions  
+ {"config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2020-08-27T14:42:49.417Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Thu, 27 Aug 2020 14:42:49 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] i  hosting[messenger-clone-afef7]: beginning deploy... 
+[info] i  hosting[messenger-clone-afef7]: found 18 files in build 
+[debug] [2020-08-27T14:42:49.487Z] [hosting] hash cache [YnVpbGQ] not populated
+[debug] [2020-08-27T14:42:50.525Z] [hosting] hash cache [YnVpbGQ] stored for 18 files
+[debug] [2020-08-27T14:42:50.526Z] [hosting][hash queue][FINAL] {"max":1015,"min":40,"avg":107.5,"active":0,"complete":18,"success":18,"errored":0,"retried":0,"total":18,"elapsed":1038}
+[debug] [2020-08-27T14:42:50.526Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/messenger-clone-afef7/versions/65909785f9e49283:populateFiles  
+ <request body omitted>
+[debug] [2020-08-27T14:42:51.854Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Thu, 27 Aug 2020 14:42:52 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-08-27T14:42:51.863Z] [hosting][populate queue][FINAL] {"max":1333,"min":1333,"avg":1333,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":1340}
+[debug] [2020-08-27T14:42:51.863Z] [hosting] uploads queued: 10
+[debug] [2020-08-27T14:42:54.952Z] [hosting][upload queue][FINAL] {"max":3097,"min":2135,"avg":2416.6,"active":0,"complete":10,"success":10,"errored":0,"retried":0,"total":10,"elapsed":3098}
+[info] +  hosting[messenger-clone-afef7]: file upload complete 
+[debug] [2020-08-27T14:42:54.957Z] [hosting] deploy completed after 5535ms
+[debug] [2020-08-27T14:42:55.124Z] [
+  {
+    "config": {
+      "public": "build",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "site": "messenger-clone-afef7"
+    },
+    "site": "messenger-clone-afef7",
+    "version": "sites/messenger-clone-afef7/versions/65909785f9e49283"
+  }
+]
+[info] i  hosting[messenger-clone-afef7]: finalizing version... 
+[debug] [2020-08-27T14:42:55.128Z] >>> HTTP REQUEST PATCH https://firebasehosting.googleapis.com/v1beta1/sites/messenger-clone-afef7/versions/65909785f9e49283?updateMask=status  
+ {"status":"FINALIZED"}
+[debug] [2020-08-27T14:42:56.355Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Thu, 27 Aug 2020 14:42:56 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-08-27T14:42:56.356Z] [hosting] finalized version for messenger-clone-afef7: {"name":"sites/messenger-clone-afef7/versions/65909785f9e49283","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2020-08-27T14:42:49.240610Z","createUser":{"email":"vipboytk98@gmail.com"},"finalizeTime":"2020-08-27T14:42:56.628613Z","finalizeUser":{"email":"vipboytk98@gmail.com"}}
+[info] +  hosting[messenger-clone-afef7]: version finalized 
+[info] i  hosting[messenger-clone-afef7]: releasing new version... 
+[debug] [2020-08-27T14:42:56.365Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/messenger-clone-afef7/releases?version_name=sites/messenger-clone-afef7/versions/65909785f9e49283  
+ {"message":null}
+[debug] [2020-08-27T14:42:57.601Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Thu, 27 Aug 2020 14:42:57 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-08-27T14:42:57.602Z] [hosting] release: {"name":"sites/messenger-clone-afef7/releases/1598539377298169","version":{"name":"sites/messenger-clone-afef7/versions/65909785f9e49283","status":"FINALIZED","config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2020-08-27T14:42:49.240610Z","createUser":{"email":"vipboytk98@gmail.com"},"finalizeTime":"2020-08-27T14:42:56.628613Z","finalizeUser":{"email":"vipboytk98@gmail.com"},"preview":{}},"type":"DEPLOY","releaseTime":"2020-08-27T14:42:57.298169895Z","releaseUser":{"email":"vipboytk98@gmail.com"}}
+[info] +  hosting[messenger-clone-afef7]: release complete 
+[info] 
+[info] +  Deploy complete! 
+[info] 
+[info] Project Console: https://console.firebase.google.com/project/messenger-clone-afef7/overview
+[info] Hosting URL: https://messenger-clone-afef7.web.app
