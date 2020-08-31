@@ -1,23 +1,23 @@
 .message {
-    padding: 10px;
-    margin:10px;
-    border-radius: 25%;
-    width: fit-content;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 25%;
+  width: fit-content;
 }
 .message_user {
-    margin-left: auto;
+  margin-left: auto;
 }
-.message_userCard {   
-    background-color: #508ac9 !important;
+.message_userCard {
+  background-color: #508ac9 !important;
 }
 .message_guestCard {
-    background-color: #b3b7bb !important;
+  background-color: #b3b7bb !important;
 }
 .message_card {
-    height: 50px !important;
-    display: flex !important;
-    align-items: center;
-    border-radius: 25px !important;
-    padding-right: 12px;
-    padding-left: 12px;
+  height: 50px !important;
+  display: flex !important;
+  align-items: center;
+  border-radius: 25px !important;
+  padding-right: 12px;
+  padding-left: 12px;
 }

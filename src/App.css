@@ -3,13 +3,16 @@
 }
 
 .app__form {
- padding:20px;
- position: fixed;
- bottom: 0;
- z-index: 1;
- background-color: #e9e9eb;
- width: 90%; 
- margin: 20px;
+  padding: 20px;
+  position: fixed;
+  bottom: 5%;
+  z-index: 1;
+  /* background-color: #e9e9eb; */
+  width: 70%;
+  margin: 0 10rem;
+  border-radius: 10px;
+  background-color: rgb(0, 0, 0); 
+  background-color: rgba(172, 168, 168, 0.4);
 }
 
 .app__formControl {
@@ -20,6 +23,6 @@
 .app__input {
   flex: 1;
 }
-.app__iconButon {
-  flex:0;
+.app__iconButton {
+  flex: 0;
 }
