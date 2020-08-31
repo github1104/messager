@@ -1,0 +1,14 @@
+.LoginBox {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.LoginForm {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #508ac9;
+    border-radius: 10px;
+    padding: 10px;
+}
