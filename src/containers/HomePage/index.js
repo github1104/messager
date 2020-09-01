@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FormControl, Input, IconButton } from "@material-ui/core";
-import "./App.css";
+import "./style.css";
 
-import db from "./firebase";
+import db from "../../firebase";
 import firebase from "firebase";
 import FlipMove from "react-flip-move";
 import SendIcon from "@material-ui/icons/Send";
@@ -10,9 +10,9 @@ import {
   useParams
 } from "react-router-dom";
 
-import Message from "./Message";
+import Message from "../../components/Message";
 
-function DialogBox() {
+function HomePage() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   // const [userName, setUserName] = useState("");
@@ -45,7 +45,7 @@ function DialogBox() {
   };
 
   return (
-    <div className="DialogBox">
+    <div className="HomePage">
       <img
         src="https://www.logo.wine/a/logo/Facebook_Messenger/Facebook_Messenger-Logo.wine.svg"
         width="250px"
@@ -82,4 +82,4 @@ function DialogBox() {
   );
 }
 
-export default DialogBox;
+export default HomePage;

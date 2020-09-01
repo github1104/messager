@@ -7,8 +7,8 @@ import {
 
 import "./App.css";
 
-import DialogBox from "./DialogBox";
-import Login from "./Login";
+import HomePage from "./containers/HomePage";
+import Login from "./containers/LoginPage";
 
 const fakeAuth = {
   isAuthenticated: false,
@@ -25,7 +25,7 @@ const fakeAuth = {
 function PrivateRoute({ children, ...rest }) {
   return (
     <Route
-      {...rest}
+      {...rest} 
       render={({ location }) =>
         fakeAuth.isAuthenticated ? (
           children
@@ -47,7 +47,7 @@ function App() {
     <Router>
       <div className="App">
         <Route exact path="/" component={Login} />
-        <Route path="/dialogbox/:nameUser" component={DialogBox} />
+        <Route path="/HomePage/:nameUser" component={HomePage} />
       </div>
     </Router>
   );

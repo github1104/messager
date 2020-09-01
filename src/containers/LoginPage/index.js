@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { BrowserRouter as Router, Redirect, Link } from "react-router-dom";
 
-import "./Login.css";
+import "./style.css";
 
 export default function Login(props) {
   const [nameUser, setNameUser] = useState("");
