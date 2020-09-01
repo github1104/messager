@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 
 import Message from "../../components/Message";
+import Layout from "../../components/Layout";
 
 function HomePage() {
   const [input, setInput] = useState("");
@@ -45,7 +46,7 @@ function HomePage() {
   };
 
   return (
-    <div className="HomePage">
+    <Layout>
       <img
         src="https://www.logo.wine/a/logo/Facebook_Messenger/Facebook_Messenger-Logo.wine.svg"
         width="250px"
@@ -78,7 +79,7 @@ function HomePage() {
           <Message key={id} username={nameUser} message={message} />
         ))}
       </FlipMove>
-    </div>
+    </Layout>
   );
 }
 

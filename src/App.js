@@ -9,6 +9,7 @@ import "./App.css";
 
 import HomePage from "./containers/HomePage";
 import Login from "./containers/LoginPage";
+import RegisterPage from "./containers/RegisterPage";
 
 const fakeAuth = {
   isAuthenticated: false,
@@ -47,6 +48,8 @@ function App() {
     <Router>
       <div className="App">
         <Route exact path="/" component={Login} />
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={RegisterPage} />
         <Route path="/HomePage/:nameUser" component={HomePage} />
       </div>
     </Router>
