@@ -10,6 +10,7 @@ import "./App.css";
 import HomePage from "./containers/HomePage";
 import Login from "./containers/LoginPage";
 import RegisterPage from "./containers/RegisterPage";
+import PrivateRoute from './components/PrivateRoute'
 
 const fakeAuth = {
   isAuthenticated: false,
@@ -23,34 +24,16 @@ const fakeAuth = {
   },
 };
 
-function PrivateRoute({ children, ...rest }) {
-  return (
-    <Route
-      {...rest} 
-      render={({ location }) =>
-        fakeAuth.isAuthenticated ? (
-          children
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/",
-              state: { from: location }
-            }}
-          />
-        )
-      }
-    />
-  );
-}
+
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Route exact path="/" component={Login} />
+        <PrivateRoute path="/" exact component={HomePage}/>
         <Route path="/login" component={Login} />
         <Route path="/signup" component={RegisterPage} />
-        <Route path="/HomePage/:nameUser" component={HomePage} />
+        {/* <Route path="/HomePage/:nameUser" component={HomePage} /> */}
       </div>
     </Router>
   );
