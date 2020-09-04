@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -6,11 +6,21 @@ import { BrowserRouter as Router, Redirect, Link } from "react-router-dom";
 
 import "./style.css";
 import Layout from "../../components/Layout";
+import { useDispatch, useSelector } from "react-redux";
+import { signin, isLoggedInUser } from "../../actions";
 
 export default function Login(props) {
-  const [nameUser, setNameUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth)
+
+
+  // useEffect(()=>{
+  //   if(!auth.authenticated){
+  //     dispatch(isLoggedInUser())
+  //   }
+  // },[])
 
   const ColorButton = withStyles((theme) => ({
     root: {
@@ -23,11 +33,29 @@ export default function Login(props) {
   }))(Button);
 
   const login = (event) => {
+    console.log(auth)
     event.preventDefault();
-    console.log(nameUser);
-    // return <Redirect to="/dialogbox" />;
-    props.history.push(`/HomePage/${nameUser}`);
+
+    if(email == ""){
+      alert("Email is required");
+      return;
+    }
+    if(password == ""){
+      alert("Password is required");
+      return;
+    }
+
+    dispatch(signin({email,password}));
+
+  
+    // props.history.push(`/HomePage/${nameUser}`);
   };
+
+
+  if(auth.authenticated){ 
+    console.log(46,auth)
+    return <Redirect to="/HomePage" />
+  }
 
   return (
     <Layout>
@@ -39,8 +67,8 @@ export default function Login(props) {
               id="outlined-basic"
               label="Username"
               variant="outlined"
-              value={nameUser}
-              onChange={(event) => setNameUser(event.target.value)}
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               style={{ marginBottom: "30px" }}
             />
             <TextField

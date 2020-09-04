@@ -30,9 +30,7 @@ function HomePage() {
       });
   }, []);
 
-  // useEffect(() => {
-  //   setUserName(prompt("Enter your username"));
-  // }, []);
+
 
   const sendMessage = (event) => {
     event.preventDefault();
