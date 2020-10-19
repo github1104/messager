@@ -17,6 +17,7 @@ import {  isLoggedInUser } from "./actions/auth.actions";
 function App() {
   const auth = useSelector(state => state.auth)
   const dispatch = useDispatch()
+  
 
   useEffect(()=>{
     if(!auth.authenticated){
@@ -28,7 +29,6 @@ function App() {
     <Router>
       <div className="App">
         <PrivateRoute path="/" exact component={HomePage}/>
-        <Route path="/HomePage" component={HomePage} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={RegisterPage} />
         {/* <Route path="/HomePage/:nameUser" component={HomePage} /> */}

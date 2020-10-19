@@ -7,13 +7,14 @@ import {signup} from '../../actions';
 
 import "./style.css";
 import Layout from '../../components/Layout'
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function RegisterPage(props) {
     const [nameUser, setNameUser] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
+    const auth = useSelector(state => state.auth)
 
     const ColorButton = withStyles((theme) => ({
         root: {
@@ -32,8 +33,13 @@ export default function RegisterPage(props) {
             nameUser, email, password
         }
         dispatch(signup(user));
-        email && props.history.push(`/HomePage/${nameUser}`) ;
+     
     };
+
+    if(auth.authenticated){ 
+        console.log(46,auth)
+        return <Redirect to="/" />
+    }
 
     return (
         <Layout>

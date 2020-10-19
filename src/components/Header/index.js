@@ -28,7 +28,7 @@ const Header = (props) => {
             <ul className="menu">
                 <li>
                     <Link to={'#'} onClick={()=>{
-                        dispatch(logout());
+                        dispatch(logout(auth.uid));
                     }}>Logout</Link>
                 </li>
             </ul> : null}

@@ -1,83 +1,145 @@
-import React, { useState, useEffect } from "react";
-import { FormControl, Input, IconButton } from "@material-ui/core";
-import "./style.css";
+import React, { useEffect, useState } from 'react';
+import './style.css';
+import Layout from '../../components/Layout';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRealtimeConversations, getRealtimeUsers, updateMessage } from '../../actions/user.actions';
 
-import db from "../../firebase";
-import firebase from "firebase";
-import FlipMove from "react-flip-move";
-import SendIcon from "@material-ui/icons/Send";
-import {
-  useParams
-} from "react-router-dom";
+const User = (props) => {
 
-import Message from "../../components/Message";
-import Layout from "../../components/Layout";
+  const { user, onClick } = props;
+  return (
+    <div onClick={() => onClick} className="displayName" key={user.uid}>
+      <div className="displayPic">
+        <img src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg" alt="" />
+      </div>
+      <div style={{ flex: 1, justifyContent: 'space-between', display: 'flex', margin: '0 10px' }}>
+        <span style={{ fontWeight: 500 }}>{user.nameUser}</span>
+        <span>{user.isOnline ? 'Online' : 'Offline'}</span>
+      </div>
+    </div>
+  )
+}
 
-function HomePage() {
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([]);
-  // const [userName, setUserName] = useState("");
+const HomePage = (props) => {
 
-  let { nameUser } = useParams();
+  const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth);
+  const user = useSelector(state => state.user);
+  const [chatStarted, setChatStarted] = useState(false);
+  const [chatUser, setChatUser] = useState('');
+  const [message, setMessage] = useState('');
+  const [userUid, setUserUid] = useState(null);
+  let unsubcribe;
+
 
   useEffect(() => {
-    db.collection("messages")
-      .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
-        setMessages(
-          snapshot.docs.map((doc) => ({ id: doc.id, message: doc.data() }))
-        );
-      });
-  }, []);
+
+    unsubcribe = dispatch(getRealtimeUsers(auth.uid))
+      .then(unsubcribe => {
+        console.log(37, unsubcribe)
+        return unsubcribe;
+      })
+      .catch(error => {
+        console.log(error);
+      })
+
+
+  }, [])
+
+  //componentWillUnmount
+  useEffect(() => {
+    return () => {
+      console.log(48, unsubcribe)
+      unsubcribe.then(f => f()).catch(error => console.log(error));
+
+    }
+  }, [])
 
 
 
-  const sendMessage = (event) => {
-    event.preventDefault();
+  const initChat = (user) => {
+    setChatStarted(true);
+    setChatUser(user.nameUser);
+    setUserUid(user.uid);
 
-    db.collection("messages").add({
-      message: input,
-      username: nameUser,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-    setInput("");
-  };
+    dispatch(getRealtimeConversations({uid_1:auth.uid,uid_2:user.uid}))
+  }
+
+  const submitMessage = (e) => {
+    const msgObject = {
+      user_uid_1: auth.uid,
+      user_uid_2: userUid,
+      message
+    }
+
+    if (message !== "") {
+      dispatch(updateMessage(msgObject));
+    }
+
+    // console.log(72,msgObject)
+  }
 
   return (
     <Layout>
-      <img
-        src="https://www.logo.wine/a/logo/Facebook_Messenger/Facebook_Messenger-Logo.wine.svg"
-        width="250px"
-        alt="img"
-      />
-      <h2>Hi {nameUser}</h2>
-      <form className="app__form">
-        <FormControl className="app__formControl">
-          <Input
-            className="app__input"
-            placeholder="Enter the message..."
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-          />
-          <IconButton
-            className="app__iconButton"
-            disabled={!input}
-            type="submit"
-            variant="contained"
-            color="primary"
-            onClick={sendMessage}
-          >
-            <SendIcon />
-          </IconButton>
-        </FormControl>
-      </form>
+      <section className="container">
+        <div className="listOfUsers">
+          {
+            user.users.length > 0 ?
+              user.users.map(user => {
 
-      <FlipMove>
-        {messages.map(({ id, message }) => (
-          <Message key={id} username={nameUser} message={message} />
-        ))}
-      </FlipMove>
+                return (
+                  <div onClick={() => initChat(user)} className="displayName" key={user.uid}>
+                    <div className="displayPic">
+                      <img src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg" alt="" />
+                    </div>
+                    <div style={{ flex: 1, justifyContent: 'space-between', display: 'flex', margin: '0 10px' }}>
+                      <span style={{ fontWeight: 500 }}>{user.nameUser}</span>
+                      <span className={user.isOnline ? `onlineStatus` : `onlineStatus off`}></span>
+                    </div>
+                  </div>
+                );
+              })
+
+              : null
+          }
+        </div>
+
+        <div className="chatArea">
+          <div className="chatHeader">
+            {
+              chatStarted ? chatUser : null
+            }
+          </div>
+          <div className="messageSections">
+            {
+              chatStarted ?
+                user.conversations.map(con => 
+                  <div style={{ textAlign: con.user_uid_1 == auth.uid ? 'right' : 'left' }} >
+                    <p className="messageStyle" >{con.message}</p>
+                  </div>
+                )
+                : null
+            }
+
+
+          </div>
+          {
+            chatStarted ?
+              <div className="chatControls">
+                <textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="write message"
+                />
+                <button onClick={submitMessage}>Send</button>
+              </div>
+              : null
+          }
+
+        </div>
+      </section>
     </Layout>
+
   );
 }
 

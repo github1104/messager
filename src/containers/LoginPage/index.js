@@ -54,7 +54,7 @@ export default function Login(props) {
 
   if(auth.authenticated){ 
     console.log(46,auth)
-    return <Redirect to="/HomePage" />
+    return <Redirect to="/" />
   }
 
   return (
@@ -65,7 +65,7 @@ export default function Login(props) {
             <h2>Kham Thien Arena</h2>
             <TextField
               id="outlined-basic"
-              label="Username"
+              label="Email"
               variant="outlined"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
