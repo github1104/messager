@@ -8,19 +8,27 @@ import "./style.css";
 import Layout from "../../components/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { signin, isLoggedInUser } from "../../actions";
+import { useForm } from "react-hook-form";
 
 export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth)
+  const { register, handleSubmit, errors } = useForm();
 
+   const onSubmit = (data) => {
 
-  // useEffect(()=>{
-  //   if(!auth.authenticated){
-  //     dispatch(isLoggedInUser())
-  //   }
-  // },[])
+    dispatch(signin({ email, password }))
+    console.log(24, auth.error)
+  }
+
+  useEffect(() => {
+    // if(!auth.authenticated){
+    //   dispatch(isLoggedInUser())
+    // }
+    console.log(31, auth.error);
+  }, [])
 
   const ColorButton = withStyles((theme) => ({
     root: {
@@ -32,40 +40,31 @@ export default function Login(props) {
     },
   }))(Button);
 
-  const login = (event) => {
-    console.log(auth)
-    event.preventDefault();
-
-    if(email == ""){
-      alert("Email is required");
-      return;
-    }
-    if(password == ""){
-      alert("Password is required");
-      return;
-    }
-
-    dispatch(signin({email,password}));
-
-  
-    // props.history.push(`/HomePage/${nameUser}`);
-  };
+  // const login = (event) => {
+  //   console.log(auth)
+  //   event.preventDefault();
+  //   dispatch(signin({email,password}));
 
 
-  if(auth.authenticated){ 
-    console.log(46,auth)
+  //   // props.history.push(`/HomePage/${nameUser}`);
+  // };
+
+
+  if (auth.authenticated) {
+    console.log(46, auth)
     return <Redirect to="/" />
   }
 
   return (
     <Layout>
       <Router>
-        <div className="LoginBox">
-          <form className="LoginForm" noValidate autoComplete="off">
-            <h2>Kham Thien Arena</h2>
+        <div className="LoginBox" >
+          <form className="LoginForm" onSubmit={handleSubmit(onSubmit)}>
+            <h2>Chat for fun</h2>
             <TextField
               id="outlined-basic"
               label="Email"
+              name="email"
               variant="outlined"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
@@ -73,6 +72,7 @@ export default function Login(props) {
             />
             <TextField
               id="outlined-basic"
+              name="password"
               label="Password"
               variant="outlined"
               value={password}
@@ -80,12 +80,11 @@ export default function Login(props) {
               style={{ marginBottom: "30px" }}
               type="password"
             />
-
+            <p class="error" >{auth.error === '1' && 'email or password is invalid'}</p>
             <ColorButton
               variant="contained"
               color="primary"
               className="customButton"
-              onClick={login}
               type="submit"
             >
               Login

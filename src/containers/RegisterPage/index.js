@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import {TextField,Input} from "@material-ui/core";
+import { TextField, Input } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { BrowserRouter as Router, Redirect, Link } from "react-router-dom";
-import {signup} from '../../actions';
+import { signup } from '../../actions';
 
 import "./style.css";
 import Layout from '../../components/Layout'
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm, Controller } from "react-hook-form";
 
 export default function RegisterPage(props) {
     const [nameUser, setNameUser] = useState("");
@@ -15,6 +16,15 @@ export default function RegisterPage(props) {
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth)
+    const { register, handleSubmit, errors, control } = useForm();
+
+    const onSubmit = (data) => {
+        console.log(22, data);
+        const user = {
+            nameUser, email, password
+        }
+        dispatch(signup(user));
+    };
 
     const ColorButton = withStyles((theme) => ({
         root: {
@@ -26,18 +36,18 @@ export default function RegisterPage(props) {
         },
     }))(Button);
 
-    const registerUser = (event) => {
-        event.preventDefault();
-        console.log(nameUser);
-        const user = {
-            nameUser, email, password
-        }
-        dispatch(signup(user));
-     
-    };
+    // const registerUser = (event) => {
+    //     event.preventDefault();
+    //     console.log(nameUser);
+    //     const user = {
+    //         nameUser, email, password
+    //     }
+    //     dispatch(signup(user));
 
-    if(auth.authenticated){ 
-        console.log(46,auth)
+    // };
+
+    if (auth.authenticated) {
+        console.log(46, auth)
         return <Redirect to="/" />
     }
 
@@ -45,42 +55,55 @@ export default function RegisterPage(props) {
         <Layout>
             <Router>
                 <div className="LoginBox">
-                    <form className="LoginForm" autoComplete="off">
+                    <form className="LoginForm" onSubmit={handleSubmit(onSubmit)}>
                         <TextField
                             id="outlined-basic"
                             label="Username"
+                            name="username"
+                            inputRef={register({ required: true })}
                             variant="outlined"
                             value={nameUser}
                             onChange={(event) => setNameUser(event.target.value)}
-                            style={{ marginBottom: "30px" }}
+
                         />
+                        {errors.username ? <p class="error" >User name is required.</p> : <p></p>}
 
                         <TextField
                             id="outlined-basic"
                             placeholder="Email"
+                            name="email"
+                            inputRef={register({ 
+                                required: true,
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                    message: "invalid email address"
+                                  } 
+                            })}
                             variant="outlined"
                             value={email}
                             onChange={(event) => setEmail(event.target.value)}
-                            style={{ marginBottom: "30px" }}
-                            type="email"
+
+                            type="text"
                             required
                         />
+                        {errors.email ? <p class="error" style={{ color: "red" }}>{errors.email.message}</p> : <p></p>}
+
 
                         <TextField
                             id="outlined-basic"
                             label="Password"
+                            inputRef={register({ required: true })}
                             variant="outlined"
+                            name="password"
                             value={password}
                             onChange={(event) => setPassword(event.target.value)}
-                            style={{ marginBottom: "30px" }}
                             type="password"
                         />
-
+                        {errors.password ? <p class="error" style={{ color: "red" }}>Password is required.</p> : <p></p>}
                         <ColorButton
                             variant="contained"
                             color="primary"
                             className="customButton"
-                            onClick={registerUser}
                             type="submit"
                         >
                             Resgister

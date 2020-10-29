@@ -99,7 +99,7 @@ export const signin = (user) => {
             
                 dispatch({
                     type: `${authConstanst.USER_LOGIN}_FAILURE`,
-                    payload:{ error }
+                    payload:{ error: '1' }
                 })
             })
     }
