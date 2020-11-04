@@ -3,19 +3,19 @@ import { firestore } from 'firebase';
 
 
 export const getRealtimeUsers = (uid) => {
-    console.log(uid);
+
     return async (dispatch) => {
 
         dispatch({ type: `${userConstants.GET_REALTIME_USERS}_REQUEST` })
 
-        const users = [];
+        
         const db = firestore();
         const unsubcribe = db.collection("users")
             // .where("state","==","CA")
             .onSnapshot((querySnapshot) => {
-
+                let users = [];
                 querySnapshot.forEach(function (doc) {
-                    console.log(17, doc.data())
+     
                     if (doc.data().uid !== uid) {
                         users.push(doc.data());
                     }

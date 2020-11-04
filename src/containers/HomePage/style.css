@@ -35,10 +35,10 @@
   height: 50px;
   bottom: 0;
 }
-.chatControls textarea{
-  width: 90%;
+.chatControls .chatText{
+  width: 80%;
 }
-.chatControls button{
+.chatControls .Button{
   width: 10%;
 }
 

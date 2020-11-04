@@ -17,6 +17,11 @@ export default (state = initState, action) => {
                 users: action.payload.users
             }
             break;
+        case `${userConstants.GET_REALTIME_USERS}_FAILURE`:
+
+            state =  initState;
+    
+            break;
         case userConstants.GET_REALTIME_MESSAGES:
             state = {
                 ...state,

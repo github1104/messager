@@ -51,7 +51,7 @@ export default function Login(props) {
 
 
   if (auth.authenticated) {
-    console.log(46, auth)
+
     return <Redirect to="/" />
   }
 
@@ -80,7 +80,7 @@ export default function Login(props) {
               style={{ marginBottom: "30px" }}
               type="password"
             />
-            <p class="error" >{auth.error === '1' && 'email or password is invalid'}</p>
+            <p className="error" >{auth.error === '1' && 'email or password is invalid'}</p>
             <ColorButton
               variant="contained"
               color="primary"

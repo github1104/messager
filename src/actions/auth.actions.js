@@ -48,6 +48,10 @@ export const signup = (user) => {
             })
             .catch(err => {
                 console.log(err);
+                dispatch({
+                    type: `${authConstanst.USER_LOGIN}_FAILURE`,
+                    payload: {error: '2'}
+                })
             })
     }
 }

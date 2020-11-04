@@ -64,9 +64,9 @@ export default function RegisterPage(props) {
                             variant="outlined"
                             value={nameUser}
                             onChange={(event) => setNameUser(event.target.value)}
-
+                          
                         />
-                        {errors.username ? <p class="error" >User name is required.</p> : <p></p>}
+                        {errors.username ? <p className="error" >User name is required.</p> : <p></p>}
 
                         <TextField
                             id="outlined-basic"
@@ -84,22 +84,24 @@ export default function RegisterPage(props) {
                             onChange={(event) => setEmail(event.target.value)}
 
                             type="text"
-                            required
+                    
                         />
-                        {errors.email ? <p class="error" style={{ color: "red" }}>{errors.email.message}</p> : <p></p>}
+                        {errors.email ? <p className="error" style={{ color: "red" }}>{errors.email.message}</p> : <p></p>}
 
 
                         <TextField
                             id="outlined-basic"
                             label="Password"
-                            inputRef={register({ required: true })}
+                            inputRef={register({ required: true,minLength:6 })}
                             variant="outlined"
                             name="password"
                             value={password}
                             onChange={(event) => setPassword(event.target.value)}
                             type="password"
+                            
                         />
-                        {errors.password ? <p class="error" style={{ color: "red" }}>Password is required.</p> : <p></p>}
+                        {errors.password ? <p className="error" style={{ color: "red" }}>Password should be at least 6 characters</p> : <p></p>}
+                        <p className="error" >{auth.error === '2' && 'The email address is already exist'}</p>
                         <ColorButton
                             variant="contained"
                             color="primary"

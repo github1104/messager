@@ -20,6 +20,7 @@
 .menu{
     display: flex;
     margin: 20px;
+    list-style-type: none;
 }
 
 .menu > li > a{
@@ -37,12 +38,13 @@
 
 .leftMenu > li{
     margin: 0 10px;
-   
+
 }
 
 .leftMenu > li > a{
     color: #fff;
     text-decoration: none;
+    
 }
 
 .leftMenu > li > a.active{

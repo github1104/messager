@@ -2,7 +2,8 @@ import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import './style.css';
 import { useSelector, useDispatch } from 'react-redux';
-import {logout} from '../../actions'
+import { logout } from '../../actions'
+import SearchIcon from '@material-ui/icons/Search';
 
 const Header = (props) => {
 
@@ -13,6 +14,12 @@ const Header = (props) => {
         <header className="header">
             <div style={{ display: 'flex' }}>
                 <div className="logo">Web Messenger</div>
+                {/* <div className="search">
+                    <div className="searchIcon">
+                        <SearchIcon />
+                    </div>
+                   
+                </div> */}
                 {
                     !auth.authenticated ?
                         <ul className="leftMenu">
@@ -24,14 +31,20 @@ const Header = (props) => {
 
             </div>
             <div style={{ margin: '20px 0', color: '#fff', fontWeight: 'bold' }}>{auth.authenticated ? `Hi ${auth.nameUser}` : null}</div>
-            {auth.authenticated ? 
-            <ul className="menu">
-                <li>
-                    <Link to={'#'} onClick={()=>{
-                        dispatch(logout(auth.uid));
-                    }}>Logout</Link>
-                </li>
-            </ul> : null}
+            {auth.authenticated ?
+                <ul className="menu">
+                    <li>
+                        <Link to={'/Info'} onClick={() => {
+
+                        }}>Info</Link>
+                    </li>
+                    <li style={{ marginLeft: 20 }}>
+                        <Link to={'#'} onClick={() => {
+                            dispatch(logout(auth.uid));
+                        }}>Logout</Link>
+                    </li>
+
+                </ul> : null}
 
         </header>
     )

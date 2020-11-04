@@ -19,6 +19,7 @@ const firebaseApp = firebase.initializeApp({
 });
 
 const db = firebaseApp.firestore();
+const storeage = firebase.storage();
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
