@@ -10,13 +10,16 @@
 
 .logo{
     font-size: 20px;
-    color: #fff;
     text-transform: capitalize;
     font-weight: bold;
     margin: 18px;
     text-shadow: 0 0;
-}
 
+}
+.logo > a  {
+    color: #fff;
+    text-decoration: none;
+}
 .menu{
     display: flex;
     margin: 20px;

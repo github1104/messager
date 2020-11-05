@@ -1,0 +1,32 @@
+.wrapAvatar {
+    background-color: grey;
+    height: 30%;
+    justify-content: center;
+    align-items: flex-end;
+    display: flex;
+    
+}
+.avatar {
+    position: relative;
+    top: 2em;
+}
+.infoUser {
+    margin-top: 2em;
+}
+.upload {
+    /* background-image: url("../../public/iconCamera.png"); */
+    border: honeydew;
+    position: relative;
+    bottom: 1em;
+}
+.bottom {
+    width: 100%;
+}
+.cardProfile{
+    position: relative;
+}
+.btnSave {
+    position: absolute;
+    bottom: 1em;
+    right: 40%;
+}

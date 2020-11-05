@@ -7,22 +7,9 @@ import {storage} from "firebase";
 import { Button,TextField  } from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
 import SendIcon from '@material-ui/icons/Send';
+import ListUser from '../../components/ListUser';
 
-const User = (props) => {
 
-  const { user, onClick } = props;
-  return (
-    <div onClick={() => onClick} className="displayName" key={user.uid}>
-      <div className="displayPic">
-        <img src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg" alt="" />
-      </div>
-      <div style={{ flex: 1, justifyContent: 'space-between', display: 'flex', margin: '0 10px' }}>
-        <span style={{ fontWeight: 500 }}>{user.nameUser}</span>
-        <span>{user.isOnline ? 'Online' : 'Offline'}</span>
-      </div>
-    </div>
-  )
-}
 
 const HomePage = (props) => {
 
@@ -138,20 +125,12 @@ const HomePage = (props) => {
           {
             user.users.length > 0 ?
               user.users.map(user => {
-
                 return (
-                  <div onClick={() => initChat(user)} className="displayName" key={user.uid}>
-                    <div className="displayPic">
-                      <img src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg" alt="" />
-                    </div>
-                    <div style={{ flex: 1, justifyContent: 'space-between', display: 'flex', margin: '0 10px' }}>
-                      <span style={{ fontWeight: 500 }}>{user.nameUser}</span>
-                      <span className={user.isOnline ? `onlineStatus` : `onlineStatus off`}></span>
-                    </div>
+                  <div onClick={() => initChat(user)}  key={user.uid}>
+                    <ListUser name={user.nameUser} isOnline={user.isOnline} avatar={require('../../public/iconUser.png')} context="asdassssssssssssssssssssssssssssssssssssssssssssssssss"/>
                   </div>
                 );
               })
-
               : null
           }
         </div>
@@ -167,8 +146,11 @@ const HomePage = (props) => {
               chatStarted ?
                 user.conversations.map(con =>
                   <div style={{ textAlign: con.user_uid_1 == auth.uid ? 'right' : 'left' }} >  
-                    {con.url && <div><img src={con.url} /></div>}
-                    {con.message &&  <p className="messageStyle" >{con.message}</p>}
+                    {con.url && 
+                    <div className="imageChat">
+                      <img src={con.url} />
+                    </div>}
+                    {con.message &&  <p className={con.user_uid_1 == auth.uid ? "messageStyleAuth":"messageStyleUser"} >{con.message}</p>}
                    
                   </div>
                 )

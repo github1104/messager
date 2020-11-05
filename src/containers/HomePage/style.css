@@ -67,8 +67,16 @@
   object-fit: cover;
 }
 
-.messageStyle{
+.messageStyleAuth{
   background: skyblue;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin: 5px;
+  display: inline-block;
+}
+.messageStyleUser{
+  background:#ccc;
   display: inline-block;
   padding: 5px 10px;
   border-radius: 10px;
@@ -84,16 +92,10 @@
   top: 40px;
 }
 
-.onlineStatus{
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  background: #16e316;
-  border-radius: 5px;
-  box-shadow: 0 0 10px 0 #16e316;
+.imageChat img{
+  max-width: 300px;
+  padding: 5px 10px;
 }
-
-.onlineStatus.off{
-  background: gray;
-  box-shadow: 0 0 0 0;
+.chatbtn {
+  width: 10%;
 }
