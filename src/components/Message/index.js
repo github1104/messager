@@ -4,10 +4,10 @@ import "./style.css";
 
 const Message = forwardRef(({ message, username }, ref) => {
   const isUser = username === message.username;
-//   const time = Intl.DateTimeFormat("en", {
-//     timeStyle: "short",
-//     dateStyle: "short",
-//   }).format(message.timestamp.toDate());
+  //   const time = Intl.DateTimeFormat("en", {
+  //     timeStyle: "short",
+  //     dateStyle: "short",
+  //   }).format(message.timestamp.toDate());
   return (
     <div ref={ref} className={`message ${isUser && "message_user"}`}>
       <Card

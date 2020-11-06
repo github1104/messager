@@ -14,21 +14,20 @@ export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const auth = useSelector(state => state.auth)
+  const auth = useSelector((state) => state.auth);
   const { register, handleSubmit, errors } = useForm();
 
-   const onSubmit = (data) => {
-
-    dispatch(signin({ email, password }))
-    console.log(24, auth.error)
-  }
+  const onSubmit = (data) => {
+    dispatch(signin({ email, password }));
+    console.log(24, auth.error);
+  };
 
   useEffect(() => {
     // if(!auth.authenticated){
     //   dispatch(isLoggedInUser())
     // }
     console.log(31, auth.error);
-  }, [])
+  }, []);
 
   const ColorButton = withStyles((theme) => ({
     root: {
@@ -45,20 +44,17 @@ export default function Login(props) {
   //   event.preventDefault();
   //   dispatch(signin({email,password}));
 
-
   //   // props.history.push(`/HomePage/${nameUser}`);
   // };
 
-
   if (auth.authenticated) {
-
-    return <Redirect to="/" />
+    return <Redirect to="/" />;
   }
 
   return (
     <Layout>
       <Router>
-        <div className="LoginBox" >
+        <div className="LoginBox">
           <form className="LoginForm" onSubmit={handleSubmit(onSubmit)}>
             <h2>Chat for fun</h2>
             <TextField
@@ -80,7 +76,9 @@ export default function Login(props) {
               style={{ marginBottom: "30px" }}
               type="password"
             />
-            <p className="error" >{auth.error === '1' && 'email or password is invalid'}</p>
+            <p className="error">
+              {auth.error === "1" && "email or password is invalid"}
+            </p>
             <ColorButton
               variant="contained"
               color="primary"
@@ -88,12 +86,11 @@ export default function Login(props) {
               type="submit"
             >
               Login
-          </ColorButton>
+            </ColorButton>
             {/* <Link to="/dialogbox">Users</Link> */}
           </form>
         </div>
       </Router>
     </Layout>
-
   );
 }
