@@ -15,7 +15,6 @@ const HomePage = (props) => {
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
 
-
   const [chatStarted, setChatStarted] = useState(false);
   const [chatUser, setChatUser] = useState("");
   const [message, setMessage] = useState("");

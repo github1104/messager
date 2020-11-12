@@ -19,8 +19,12 @@ const Info = () => {
             let src = URL.createObjectURL(img)
             setUrlImage(src)
         }
-
     }
+    const onChoosePhoto = (e) => {
+        if (e.target.files[0]) {
+            setImage(e.target.files[0]);
+        }
+    };
 
     const onChoosePhotoCover = (e) => {
         let img = e.target.files[0]
