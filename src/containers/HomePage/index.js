@@ -3,12 +3,11 @@ import './style.css';
 import Layout from '../../components/Layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRealtimeConversations, getRealtimeUsers, updateMessage } from '../../actions/user.actions';
-import {storage} from "firebase";
-import { Button,TextField  } from '@material-ui/core';
+import { storage } from "firebase";
 import ImageIcon from '@material-ui/icons/Image';
 import SendIcon from '@material-ui/icons/Send';
 import ListUser from '../../components/ListUser';
-
+import * as Scroll from 'react-scroll';
 
 
 const HomePage = (props) => {
@@ -17,14 +16,16 @@ const HomePage = (props) => {
   const auth = useSelector(state => state.auth);
   const user = useSelector(state => state.user);
 
+
   const [chatStarted, setChatStarted] = useState(false);
   const [chatUser, setChatUser] = useState('');
   const [message, setMessage] = useState('');
   const [userUid, setUserUid] = useState(null);
   const [image, setImage] = useState(null);
-
+  const [previewImg, setPreImg] = useState(null);
 
   let unsubcribe;
+  let scroll = Scroll.animateScroll;
 
   useEffect(() => {
     console.log(36, auth)
@@ -57,12 +58,13 @@ const HomePage = (props) => {
     setChatStarted(true);
     setChatUser(user.nameUser);
     setUserUid(user.uid);
-    console.log(64, `auth.uid-user.uid`)
-    dispatch(getRealtimeConversations({ uid_1: auth.uid, uid_2: user.uid }))
+    console.log(64, `auth.uid-user.uid`);
+    dispatch(getRealtimeConversations({ uid_1: auth.uid, uid_2: user.uid }));
+    
   }
 
-   const submitMessage = (e) => {
-    if (image){
+  const submitMessage = (e) => {
+    if (image) {
       upLoadPhoto();
 
     }
@@ -72,38 +74,41 @@ const HomePage = (props) => {
         user_uid_1: auth.uid,
         user_uid_2: userUid,
         message,
-        url:null
+        url: null
       }
       dispatch(updateMessage(msgObject));
       console.log(87, msgObject)
     }
-    
-    setMessage("");
 
+    setMessage("");
+    scrollToBottom()
   }
 
   const onChoosePhoto = (e) => {
-    if(e.target.files[0]){
+    if (e.target.files[0]) {
       setImage(e.target.files[0])
+      let src = URL.createObjectURL(e.target.files[0])
+      setPreImg(src)
     }
-    
+
   }
 
-   const upLoadPhoto = () => {
+  const upLoadPhoto = () => {
     const store = storage()
     var uploadTask = store.ref(`images/${image.name}`).put(image);
+    setPreImg(null);
     uploadTask.on(
       'state_changed',
-      snapshot => {},
-      error =>{
+      snapshot => { },
+      error => {
         console.log(error);
       },
-      ()=>{
+      () => {
         store
           .ref("images")
           .child(image.name)
           .getDownloadURL()
-          .then((url)=>{
+          .then((url) => {
             let msgObject = {
               user_uid_1: auth.uid,
               user_uid_2: userUid,
@@ -115,9 +120,15 @@ const HomePage = (props) => {
       }
     )
   }
+  const scrollToBottom = () => {
+    bottomRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
 
   const hiddenFileInput = React.useRef(null);
-
+  const bottomRef = React.useRef(null);
   return (
     <Layout>
       <section className="container">
@@ -126,8 +137,8 @@ const HomePage = (props) => {
             user.users.length > 0 ?
               user.users.map(user => {
                 return (
-                  <div onClick={() => initChat(user)}  key={user.uid}>
-                    <ListUser name={user.nameUser} isOnline={user.isOnline} avatar={require('../../public/iconUser.png')} context="asdassssssssssssssssssssssssssssssssssssssssssssssssss"/>
+                  <div onClick={() => initChat(user)} key={user.uid}>
+                    <ListUser name={user.nameUser} isOnline={user.isOnline} avatar={require('../../public/iconUser.png')} context="asdassssssssssssssssssssssssssssssssssssssssssssssssss" />
                   </div>
                 );
               })
@@ -136,7 +147,7 @@ const HomePage = (props) => {
         </div>
 
         <div className="chatArea">
-          <div className="chatHeader">
+          <div className="chatHeader" >
             {
               chatStarted ? chatUser : null
             }
@@ -145,53 +156,57 @@ const HomePage = (props) => {
             {
               chatStarted ?
                 user.conversations.map(con =>
-                  <div style={{ textAlign: con.user_uid_1 == auth.uid ? 'right' : 'left' }} >  
-                    {con.url && 
-                    <div className="imageChat">
-                      <img src={con.url} />
-                    </div>}
-                    {con.message &&  <p className={con.user_uid_1 == auth.uid ? "messageStyleAuth":"messageStyleUser"} >{con.message}</p>}
-                   
+                  <div style={{ textAlign: con.user_uid_1 == auth.uid ? 'right' : 'left' }} >
+                    {con.url &&
+                      <div className="imageChat">
+                        <img src={con.url} />
+                      </div>}
+                    {con.message && <p className={con.user_uid_1 == auth.uid ? "messageStyleAuth" : "messageStyleUser"} >{con.message}</p>}
+
                   </div>
-                )
+                ,scrollToBottom())
                 : null
             }
 
-
+            <div ref={bottomRef}></div>
           </div>
           {
             chatStarted ?
               <div className="chatControls">
-                <TextField 
+                {
+                  previewImg ? <img src={previewImg}
+                    width="100px"
+                    style={{ borderRadius: '20%', margin: '2px' }}
+                  ></img> : null
+                }
+
+                <input
                   className="chatText"
-                  id="filled-basic"
-                  variant="filled"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="write message"
                 />
                 <input
                   ref={hiddenFileInput}
-                  style={{display:'none'}}
+                  style={{ display: 'none' }}
                   accept="image/*"
                   className="viewInputGallery"
                   type="file"
                   onChange={onChoosePhoto}
                 />
-                <Button 
-                  variant="contained" 
-                  className="chatbtn"
-                  onClick={()=>hiddenFileInput.current.click()}
-                >
-                  <ImageIcon style={{fontSize:40, color:'black'}}/>
-                </Button>
-                <Button 
-                  variant="contained" 
-                  className="chatbtn"
-                  onClick={submitMessage}
-                >
-                  <SendIcon style={{fontSize:40, color:'black'}} />
-                </Button >
+                <div className="chatbtn">
+                  <button
+                    onClick={() => hiddenFileInput.current.click()}
+                  >
+                    <ImageIcon style={{ fontSize: 40, color: 'black' }} />
+                  </button>
+                  <button
+                    onClick={submitMessage}
+                  >
+                    <SendIcon style={{ fontSize: 40, color: 'black' }} />
+                  </button>
+                </div>
+
               </div>
               : null
           }

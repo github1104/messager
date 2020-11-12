@@ -4,6 +4,7 @@ import './style.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../actions'
 import SearchIcon from '@material-ui/icons/Search';
+import Avatar from '@material-ui/core/Avatar';
 
 const Header = (props) => {
 
@@ -32,14 +33,16 @@ const Header = (props) => {
                 }
 
             </div>
-            <div style={{ margin: '20px 0', color: '#fff', fontWeight: 'bold' }}>{auth.authenticated ? `Hi ${auth.nameUser}` : null}</div>
+
+
             {auth.authenticated ?
                 <ul className="menu">
-                    <li>
-                        <Link to={'/Info'} onClick={() => {
-
-                        }}>Info</Link>
-                    </li>
+                    <Link to={'/Info'} style={{ textDecoration: 'none' }}>
+                        <div style={{color: '#fff', fontWeight: 'bold', display: 'flex'}}>
+                            <Avatar alt="avatar" style={{ bottom: '6px', marginRight: '6px' }} />
+                            <div >{auth.nameUser}</div>
+                        </div>
+                    </Link>
                     <li style={{ marginLeft: 20 }}>
                         <Link to={'#'} onClick={() => {
                             dispatch(logout(auth.uid));

@@ -32,14 +32,32 @@
   display: flex;
   position: fixed;
   width: 70%;
-  height: 50px;
+  min-height: 50px;
   bottom: 0;
+  background-color: rgba(224, 223, 218);
+  align-items: flex-end;
 }
 .chatControls .chatText{
   width: 80%;
+  border-width: 0;
+  height: 50px;
+  background-color: rgba(224, 223, 218);
+  padding-left: 10px;
 }
-.chatControls .Button{
-  width: 10%;
+input {
+  outline: none;
+}
+.chatControls button{
+  background-color: rgba(224, 223, 218);
+  border-radius: 20%;
+  outline: none;
+
+}
+.chatbtn {
+  display: flex;
+  justify-content: flex-end;
+  width: 20%;
+  height: 100%;
 }
 
 .displayName{
@@ -95,7 +113,4 @@
 .imageChat img{
   max-width: 300px;
   padding: 5px 10px;
-}
-.chatbtn {
-  width: 10%;
 }

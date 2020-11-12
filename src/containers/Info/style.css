@@ -4,21 +4,55 @@
     justify-content: center;
     align-items: flex-end;
     display: flex;
-    
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
 }
 .avatar {
     position: relative;
     top: 2em;
 }
-.infoUser {
+.avtImg {
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    border:solid;
+    border-color: floralwhite;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.wrapInfoUser {
     margin-top: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.upload {
-    /* background-image: url("../../public/iconCamera.png"); */
-    border: honeydew;
-    position: relative;
-    bottom: 1em;
+.infoUser {
+    height: 15em;
+    width: 60%;
+    
 }
+.follow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.labelRow {
+    display: flex;
+}
+.labelLeft {
+    width: 40%;
+    font-weight: bold;
+}
+.labelRight {
+    padding-left: 1em;
+    width: 60%;
+    text-align: left;
+}
+
 .bottom {
     width: 100%;
 }
@@ -26,7 +60,10 @@
     position: relative;
 }
 .btnSave {
+    width: 200px;
     position: absolute;
     bottom: 1em;
-    right: 40%;
+    left: 50%;
+    margin-left: -100px;
+
 }

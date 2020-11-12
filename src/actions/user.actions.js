@@ -1,5 +1,5 @@
 import { userConstants } from './constants';
-import { firestore } from 'firebase';
+import { firestore, storage } from 'firebase';
 
 
 export const getRealtimeUsers = (uid) => {
@@ -8,14 +8,14 @@ export const getRealtimeUsers = (uid) => {
 
         dispatch({ type: `${userConstants.GET_REALTIME_USERS}_REQUEST` })
 
-        
+
         const db = firestore();
         const unsubcribe = db.collection("users")
             // .where("state","==","CA")
             .onSnapshot((querySnapshot) => {
                 let users = [];
                 querySnapshot.forEach(function (doc) {
-     
+
                     if (doc.data().uid !== uid) {
                         users.push(doc.data());
                     }
@@ -35,8 +35,9 @@ export const getRealtimeUsers = (uid) => {
 };
 
 export const updateMessage = (msgObj) => {
-
+    console.log('updateMessage')
     return async dispatch => {
+  
         const db = firestore();
         db.collection('conversations')
             .add({
@@ -59,36 +60,65 @@ export const updateMessage = (msgObj) => {
 }
 
 export const getRealtimeConversations = (user) => {
+    console.log('getRealtimeConversations')
     return async dispatch => {
-
+      
         const db = firestore();
         db.collection('conversations')
             .where('user_uid_1', 'in', [user.uid_1, user.uid_2])
-            .orderBy('createdAt','asc')
+            .orderBy('createdAt', 'asc')
             .onSnapshot((querySnapshot) => {
                 const conversations = [];
 
                 querySnapshot.forEach(doc => {
 
                     if (doc.data().user_uid_1 == user.uid_1 && doc.data().user_uid_2 == user.uid_2
-                        || doc.data().user_uid_1 == user.uid_2 && doc.data().user_uid_2 == user.uid_1) 
-                    {
+                        || doc.data().user_uid_1 == user.uid_2 && doc.data().user_uid_2 == user.uid_1) {
                         conversations.push(doc.data())
                     }
 
-                    if(conversations.length > 0){
+                    if (conversations.length > 0) {
                         dispatch({
                             type: userConstants.GET_REALTIME_MESSAGES,
-                            payload: {conversations}
+                            payload: { conversations }
                         })
-                    }else{
+                    } else {
                         dispatch({
                             type: `${userConstants.GET_REALTIME_MESSAGES}_FAILURE`,
-                            payload: {conversations}
+                            payload: { conversations }
                         })
                     }
                 })
                 console.log(conversations);
             })
     }
+}
+
+export const upLoadImage = (image, auth, userUid, message) => {
+    return async dispatch => {
+        const store = storage()
+        var uploadTask = store.ref(`images/${image.name}`).put(image);
+        uploadTask.on(
+            'state_changed',
+            snapshot => { },
+            error => {
+                console.log(error);
+            },
+            () => {
+                store
+                    .ref("images")
+                    .child(image.name)
+                    .getDownloadURL()
+                    .then((url) => {
+                        let msgObject = {
+                            user_uid_1: auth.uid,
+                            user_uid_2: userUid,
+                            message,
+                            url
+                          }
+                    })
+            }
+        )
+    }
+
 }
