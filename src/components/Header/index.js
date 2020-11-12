@@ -7,17 +7,16 @@ import SearchIcon from '@material-ui/icons/Search';
 import Avatar from '@material-ui/core/Avatar';
 
 const Header = (props) => {
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-    const auth = useSelector(state => state.auth);
-    const dispatch = useDispatch();
-
-    return (
-        <header className="header">
-            <div style={{ display: 'flex' }}>
-                <div className="logo" >
-                    <NavLink to={'/'}>Web Messenger</NavLink>
-                </div>
-                {/* <div className="search">
+  return (
+    <header className="header">
+      <div style={{ display: "flex" }}>
+        <div className="logo">
+          <NavLink to={"/"}>Web Messenger</NavLink>
+        </div>
+        {/* <div className="search">
                     <div className="searchIcon">
                         <SearchIcon />
                     </div>

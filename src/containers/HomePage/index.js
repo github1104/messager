@@ -11,15 +11,14 @@ import * as Scroll from 'react-scroll';
 
 
 const HomePage = (props) => {
-
   const dispatch = useDispatch();
-  const auth = useSelector(state => state.auth);
-  const user = useSelector(state => state.user);
+  const auth = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.user);
 
 
   const [chatStarted, setChatStarted] = useState(false);
-  const [chatUser, setChatUser] = useState('');
-  const [message, setMessage] = useState('');
+  const [chatUser, setChatUser] = useState("");
+  const [message, setMessage] = useState("");
   const [userUid, setUserUid] = useState(null);
   const [image, setImage] = useState(null);
   const [previewImg, setPreImg] = useState(null);
@@ -28,31 +27,27 @@ const HomePage = (props) => {
   let scroll = Scroll.animateScroll;
 
   useEffect(() => {
-    console.log(36, auth)
+    console.log(36, auth);
     if (auth) {
       unsubcribe = dispatch(getRealtimeUsers(auth.uid))
-        .then(unsubcribe => {
+        .then((unsubcribe) => {
           // console.log(37, unsubcribe)
           return unsubcribe;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
-        })
+        });
     }
-
-  }, [])
+  }, []);
 
   //componentWillUnmount
   useEffect(() => {
     return () => {
-      console.log(48)
+      console.log(48);
       if (unsubcribe)
-        unsubcribe.then(f => f()).catch(error => console.log(error));
-
-    }
-  }, [])
-
-
+        unsubcribe.then((f) => f()).catch((error) => console.log(error));
+    };
+  }, []);
 
   const initChat = (user) => {
     setChatStarted(true);
@@ -66,7 +61,6 @@ const HomePage = (props) => {
   const submitMessage = (e) => {
     if (image) {
       upLoadPhoto();
-
     }
 
     if (message !== "" && !image) {
@@ -77,7 +71,7 @@ const HomePage = (props) => {
         url: null
       }
       dispatch(updateMessage(msgObject));
-      console.log(87, msgObject)
+      console.log(87, msgObject);
     }
 
     setMessage("");
@@ -113,10 +107,10 @@ const HomePage = (props) => {
               user_uid_1: auth.uid,
               user_uid_2: userUid,
               message,
-              url
-            }
+              url,
+            };
             dispatch(updateMessage(msgObject));
-          })
+          });
       }
     )
   }
@@ -133,17 +127,15 @@ const HomePage = (props) => {
     <Layout>
       <section className="container">
         <div className="listOfUsers">
-          {
-            user.users.length > 0 ?
-              user.users.map(user => {
+          {user.users.length > 0
+            ? user.users.map((user) => {
                 return (
                   <div onClick={() => initChat(user)} key={user.uid}>
                     <ListUser name={user.nameUser} isOnline={user.isOnline} avatar={require('../../public/iconUser.png')} context="asdassssssssssssssssssssssssssssssssssssssssssssssssss" />
                   </div>
                 );
               })
-              : null
-          }
+            : null}
         </div>
 
         <div className="chatArea">
@@ -214,8 +206,7 @@ const HomePage = (props) => {
         </div>
       </section>
     </Layout>
-
   );
-}
+};
 
 export default HomePage;

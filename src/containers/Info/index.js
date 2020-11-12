@@ -29,8 +29,12 @@ const Info = () => {
             let src = URL.createObjectURL(img)
             setUrlCover(src)
         }
-
     }
+    const onChoosePhoto = (e) => {
+        if (e.target.files[0]) {
+            setImage(e.target.files[0]);
+        }
+    };
 
     //    const upLoadPhoto = () => {
     //     const store = storage()
@@ -133,7 +137,7 @@ const Info = () => {
 
                                         </div>
                                         <div className="labelRight">
-                                            <input value={auth.nameUser} style={{borderWidth:'0'}}></input>
+                                            <input value={auth.nameUser} style={{ borderWidth: '0' }}></input>
                                         </div>
                                     </div>
                                     <hr />
@@ -143,7 +147,7 @@ const Info = () => {
 
                                         </div>
                                         <div className="labelRight">
-                                            <input value={auth.email} style={{borderWidth:'0'}}></input>
+                                            <input value={auth.email} style={{ borderWidth: '0' }}></input>
 
                                         </div>
                                     </div>
@@ -155,7 +159,7 @@ const Info = () => {
                                         </div>
                                         <div className="labelRight">
 
-                                            <input value="11/04/1998" style={{borderWidth:'0'}}></input>
+                                            <input value="11/04/1998" style={{ borderWidth: '0' }}></input>
 
                                         </div>
                                     </div>
@@ -176,11 +180,9 @@ const Info = () => {
 
                         </div>
                     </Card>
-
                 </div>
             </Container>
         </Layout>
-
-    )
-}
+    );
+};
 export default Info;
