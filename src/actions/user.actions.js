@@ -22,49 +22,67 @@ export const getRealtimeUsers = (uid) => {
 
                 });
 
-                console.log(25, users);
+                // console.log(25, users);
                 dispatch({
                     type: `${userConstants.GET_REALTIME_USERS}_SUCCESS`,
                     payload: { users }
                 });
-
+                return unsubcribe;
             });
 
-        return unsubcribe;
+
     }
 };
 
 export const updateMessage = (msgObj) => {
     console.log('updateMessage')
     return async dispatch => {
-  
+
         const db = firestore();
+        let conversations = {
+            ...msgObj,
+            isView: false,
+            createdAt: new Date()
+        }
         db.collection('conversations')
-            .add({
-                ...msgObj,
-                isView: false,
-                createdAt: new Date()
-            })
+            .add(conversations)
             .then((data) => {
                 console.log(data)
                 //success
-                // dispatch({
-                //     type: userConstants.GET_REALTIME_MESSAGES,
 
-                // })
             })
             .catch((error) => {
                 console.log(error)
+                dispatch({
+                    type: `${userConstants.ADD_REALTIME_MESSAGES}_FAILURE`,
+                   
+                })
             });
     }
 }
 
+export const updateUser = (uid, userObject) => {
+    console.log('updateUser', userObject)
+    const db = firestore();
+    const user = db.collection("users")
+        .doc(uid)
+        .update(userObject)
+        .then((e) => {
+            console.log(e)
+        })
+        .catch((err) => {
+            console.log(err)
+
+        })
+
+}
+
 export const getRealtimeConversations = (user) => {
-    console.log('getRealtimeConversations')
+
     return async dispatch => {
-      
+
         const db = firestore();
-        db.collection('conversations')
+        const unsubcribe = db.collection('conversations')
             .where('user_uid_1', 'in', [user.uid_1, user.uid_2])
             .orderBy('createdAt', 'asc')
             .onSnapshot((querySnapshot) => {
@@ -77,48 +95,43 @@ export const getRealtimeConversations = (user) => {
                         conversations.push(doc.data())
                     }
 
-                    if (conversations.length > 0) {
-                        dispatch({
-                            type: userConstants.GET_REALTIME_MESSAGES,
-                            payload: { conversations }
-                        })
-                    } else {
-                        dispatch({
-                            type: `${userConstants.GET_REALTIME_MESSAGES}_FAILURE`,
-                            payload: { conversations }
-                        })
-                    }
+
                 })
-                console.log(conversations);
+                if (conversations.length > 0) {
+                    dispatch({
+                        type: userConstants.GET_REALTIME_MESSAGES,
+                        payload: { conversations }
+                    })
+                } else {
+                    dispatch({
+                        type: `${userConstants.GET_REALTIME_MESSAGES}_FAILURE`,
+                        payload: { conversations }
+                    })
+                }
+                // console.log(conversations);
+                return unsubcribe();
             })
     }
 }
 
-export const upLoadImage = (image, auth, userUid, message) => {
-    return async dispatch => {
-        const store = storage()
-        var uploadTask = store.ref(`images/${image.name}`).put(image);
-        uploadTask.on(
-            'state_changed',
-            snapshot => { },
-            error => {
-                console.log(error);
-            },
-            () => {
-                store
-                    .ref("images")
-                    .child(image.name)
-                    .getDownloadURL()
-                    .then((url) => {
-                        let msgObject = {
-                            user_uid_1: auth.uid,
-                            user_uid_2: userUid,
-                            message,
-                            url
-                          }
-                    })
-            }
-        )
-    }
-
+export const upLoadImageUrl = (image) => {
+    const store = storage()
+    var uploadTask = store.ref(`images/${image.name}`).put(image);
+    uploadTask.on(
+        'state_changed',
+        snapshot => { },
+        error => {
+            console.log(error);
+        },
+        () => {
+            store
+                .ref("images")
+                .child(image.name)
+                .getDownloadURL()
+                .then((url) => {
+                    console.log(url)
+                    return url;
+                })
+        }
+    )
 }

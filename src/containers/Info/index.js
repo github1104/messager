@@ -4,9 +4,11 @@ import { Container, Card, Button, IconButton, Avatar } from '@material-ui/core';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import { useSelector } from 'react-redux';
 import './style.css';
+import { upLoadImageUrl, updateUser } from '../../actions/user.actions';
 import defaultAvt from '../../public/iconUser.png'
 const Info = () => {
-    const [image, setImage] = useState(null);
+    const [imageAvt, setImage] = useState(null);
+    const [imageCover, setImageCover] = useState(null);
     const [urlImage, setUrlImage] = useState(defaultAvt);
     const [urlCover, setUrlCover] = useState(null);
     const auth = useSelector(state => state.auth);
@@ -20,52 +22,48 @@ const Info = () => {
             setUrlImage(src)
         }
     }
-    const onChoosePhoto = (e) => {
-        if (e.target.files[0]) {
-            setImage(e.target.files[0]);
-        }
-    };
+
 
     const onChoosePhotoCover = (e) => {
         let img = e.target.files[0]
         if (img) {
-            setImage(img)
+            setImageCover(img)
             let src = URL.createObjectURL(img)
             setUrlCover(src)
         }
     }
-    const onChoosePhoto = (e) => {
-        if (e.target.files[0]) {
-            setImage(e.target.files[0]);
-        }
-    };
 
-    //    const upLoadPhoto = () => {
-    //     const store = storage()
-    //     var uploadTask = store.ref(`images/${image.name}`).put(image);
-    //     uploadTask.on(
-    //       'state_changed',
-    //       snapshot => {},
-    //       error =>{
-    //         console.log(error);
-    //       },
-    //       ()=>{
-    //         store
-    //           .ref("images")
-    //           .child(image.name)
-    //           .getDownloadURL()
-    //           .then((url)=>{
-    //             let msgObject = {
-    //               user_uid_1: auth.uid,
-    //               user_uid_2: userUid,
-    //               message,
-    //               url
-    //             }
-    //             dispatch(updateMessage(msgObject));
-    //           })
-    //       }
-    //     )
-    //   }
+
+    const upLoadPhoto = async () => {
+        let urlAvt =  imageAvt ? upLoadImageUrl(imageAvt) : null 
+        let urlCover =  imageCover ? upLoadImageUrl(imageCover) : null
+
+        let userObj = {
+            avatar: urlAvt,
+            imageCover: urlCover
+        }
+        updateUser(auth.uid, userObj)
+        // const store = storage()
+        // var uploadTask = store.ref(`images/${image.name}`).put(image);
+        // uploadTask.on(
+        //     'state_changed',
+        //     snapshot => { },
+        //     error => {
+        //         console.log(error);
+        //     },
+        //     () => {
+        //         store
+        //             .ref("images")
+        //             .child(image.name)
+        //             .getDownloadURL()
+        //             .then((url) => {
+
+
+
+        //             })
+        //     }
+        // )
+    }
 
     const hiddenFileInput = React.useRef(null);
     const hiddenFileInputCover = React.useRef(null);
@@ -164,7 +162,7 @@ const Info = () => {
                                         <div className="labelRight">
 
                                             <input value="11/04/1998" style={{ borderWidth: '0' }}></input>
-
+                                            {auth.uid}
                                         </div>
                                     </div>
                                     <hr />
@@ -174,7 +172,9 @@ const Info = () => {
 
                         <div className="bottom">
                             <div className="btnSave">
-                                <Button color="primary" variant="contained" style={{ marginRight: "1em" }}>
+                                <Button color="primary" variant="contained" style={{ marginRight: "1em" }}
+                                    onClick={upLoadPhoto}
+                                >
                                     Save
                                 </Button>
                                 <Button color="inherit" variant="contained" >

@@ -19,6 +19,17 @@ export default (state = initState, action) => {
                 conversations: action.payload.conversations
             }
             break;
+        case `${userConstants.ADD_REALTIME_MESSAGES}`:
+            state = {
+                ...state,
+                conversations: action.payload.conversations
+            }
+            break;
+        case `${userConstants.ADD_REALTIME_MESSAGES}_FAILURE`:
+            state = {
+                ...state,
+            }
+            break;
     }
 
     return state;

@@ -8,7 +8,7 @@ import ImageIcon from '@material-ui/icons/Image';
 import SendIcon from '@material-ui/icons/Send';
 import ListUser from '../../components/ListUser';
 import * as Scroll from 'react-scroll';
-
+import { userConstants } from '../../actions/constants';
 
 const HomePage = (props) => {
   const dispatch = useDispatch();
@@ -29,52 +29,61 @@ const HomePage = (props) => {
     console.log(36, auth);
     if (auth) {
       unsubcribe = dispatch(getRealtimeUsers(auth.uid))
-        .then((unsubcribe) => {
-          // console.log(37, unsubcribe)
-          return unsubcribe;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // .then((unsubcribe) => {
+      //   // console.log(37, unsubcribe)
+      //   return unsubcribe;
+      // })
+      // .catch((error) => {
+      //   console.log(error);
+      // });
     }
   }, []);
 
   //componentWillUnmount
   useEffect(() => {
     return () => {
-      console.log(48);
-      if (unsubcribe)
-        unsubcribe.then((f) => f()).catch((error) => console.log(error));
-    };
+      if (unsubcribe) {
+        console.log(48);
+        unsubcribe.then((f) => f())
+          .catch((error) => console.log(error));
+      }
+    }
   }, []);
 
   const initChat = (user) => {
     setChatStarted(true);
     setChatUser(user.nameUser);
     setUserUid(user.uid);
-    console.log(64, `auth.uid-user.uid`);
-    dispatch(getRealtimeConversations({ uid_1: auth.uid, uid_2: user.uid }));
-    
+    dispatch(getRealtimeConversations({ uid_1: auth.uid, uid_2: user.uid }))
+    .then(()=> setInterval(scrollToBottom(),1000))
   }
 
   const submitMessage = (e) => {
     if (image) {
       upLoadPhoto();
+
     }
 
     if (message !== "" && !image) {
+      let conversations = user.conversations
       let msgObject = {
         user_uid_1: auth.uid,
         user_uid_2: userUid,
         message,
-        url: null
+        url: null,
+        isView: false,
+        createdAt: new Date()
       }
+      dispatch({
+        type: userConstants.ADD_REALTIME_MESSAGES,
+        payload: { conversations: conversations.push(msgObject) }
+      })
       dispatch(updateMessage(msgObject));
       console.log(87, msgObject);
     }
 
     setMessage("");
-    scrollToBottom()
+    setInterval(scrollToBottom(),1000)
   }
 
   const onChoosePhoto = (e) => {
@@ -102,12 +111,19 @@ const HomePage = (props) => {
           .child(image.name)
           .getDownloadURL()
           .then((url) => {
+            let conversations = user.conversations
             let msgObject = {
               user_uid_1: auth.uid,
               user_uid_2: userUid,
               message,
               url,
+              isView: false,
+              createdAt: new Date()
             };
+            dispatch({
+              type: userConstants.ADD_REALTIME_MESSAGES,
+              payload: { conversations: conversations.push(msgObject) }
+            })
             dispatch(updateMessage(msgObject));
           });
       }
@@ -118,22 +134,24 @@ const HomePage = (props) => {
       behavior: "smooth",
       block: "start",
     });
+    console.log('scroll')
   };
 
   const hiddenFileInput = React.useRef(null);
   const bottomRef = React.useRef(null);
+  console.log(user.conversations)
   return (
     <Layout>
       <section className="container">
         <div className="listOfUsers">
           {user.users.length > 0
             ? user.users.map((user) => {
-                return (
-                  <div onClick={() => initChat(user)} key={user.uid}>
-                    <ListUser name={user.nameUser} isOnline={user.isOnline} avatar={require('../../public/iconUser.png')} context="asdassssssssssssssssssssssssssssssssssssssssssssssssss" />
-                  </div>
-                );
-              })
+              return (
+                <div onClick={() => initChat(user)} key={user.uid}>
+                  <ListUser name={user.nameUser} isOnline={user.isOnline} avatar={require('../../public/iconUser.png')} context="asdassssssssssssssssssssssssssssssssssssssssssssssssss" />
+                </div>
+              );
+            })
             : null}
         </div>
 
@@ -155,7 +173,7 @@ const HomePage = (props) => {
                     {con.message && <p className={con.user_uid_1 == auth.uid ? "messageStyleAuth" : "messageStyleUser"} >{con.message}</p>}
 
                   </div>
-                ,scrollToBottom())
+                )
                 : null
             }
 
@@ -172,6 +190,7 @@ const HomePage = (props) => {
                 }
 
                 <input
+                  onClick={()=>scrollToBottom()}
                   className="chatText"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
