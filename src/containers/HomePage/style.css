@@ -9,24 +9,33 @@
   width: 30%;
   height: 100%;
   overflow-x: hidden;
-  border-right: 1px solid #ccc;
+  background: #3B4257;
 }
 .chatArea{
   width: 70%;
   height: 100%;
   overflow-x: hidden;
   position: relative;
+  background:#49536E;
+}
+.defaultAreaChat {
+  position: absolute;
+  top: 50% ;
+  left: 50% ;
+  margin-left: -128px;
+  margin-top:  -128px;
 }
 .chatHeader{
   position: fixed;
   width: 70%;
   height: 40px;
-  background: #e2e0e0;
+  background: #90A1D6;
   text-align: center;
   line-height: 40px;
-  color: #000;
+  color: #fff;
   font-weight: bold;
   font-family: sans-serif;
+  cursor: pointer;
 }
 .chatControls{
   display: flex;
@@ -34,24 +43,26 @@
   width: 70%;
   min-height: 50px;
   bottom: 0;
-  background-color: rgba(224, 223, 218);
-  align-items: flex-end;
+  background-color: #373c4d;
+  align-items: center;
 }
 .chatControls .chatText{
   width: 80%;
   border-width: 0;
   height: 50px;
-  background-color: rgba(224, 223, 218);
+  background-color: #373c4d;
   padding-left: 10px;
 }
 input {
   outline: none;
+  color: #fff;
 }
 .chatControls button{
-  background-color: rgba(224, 223, 218);
+  background-color:#49536E;
   border-radius: 20%;
+  border: none;
   outline: none;
-
+  cursor: pointer;
 }
 .chatbtn {
   display: flex;
@@ -113,4 +124,16 @@ input {
 .imageChat img{
   max-width: 300px;
   padding: 5px 10px;
+}
+.previewImg {
+  position: relative;
+  margin-top: 2px;
+}
+.previewImg button{
+  position: absolute;
+  top: 0;
+  right: -2px;
+  color: #fff;
+  background: #282D3C;
+  border-radius: 50%;
 }
