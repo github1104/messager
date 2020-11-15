@@ -9,6 +9,8 @@ import "./style.css";
 import Layout from "../../components/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
+import { css } from "@emotion/core";
+import { MoonLoader } from "react-spinners";
 
 export default function RegisterPage(props) {
   const [nameUser, setNameUser] = useState("");
@@ -18,6 +20,11 @@ export default function RegisterPage(props) {
   const auth = useSelector((state) => state.auth);
   const { register, handleSubmit, errors, control } = useForm();
 
+  const override = css`
+  display: block;
+  margin: auto;
+  border-color: red;
+ `;
   const onSubmit = (data) => {
     console.log(22, data);
     const user = {
@@ -58,6 +65,7 @@ export default function RegisterPage(props) {
       <Router>
         <div className="LoginBox">
           <form className="LoginForm" onSubmit={handleSubmit(onSubmit)}>
+            <h2>Chat for fun</h2>
             <TextField
               id="outlined-basic"
               label="Username"
@@ -70,8 +78,8 @@ export default function RegisterPage(props) {
             {errors.username ? (
               <p className="error">User name is required.</p>
             ) : (
-              <p></p>
-            )}
+                <p></p>
+              )}
 
             <TextField
               id="outlined-basic"
@@ -94,8 +102,8 @@ export default function RegisterPage(props) {
                 {errors.email.message}
               </p>
             ) : (
-              <p></p>
-            )}
+                <p></p>
+              )}
 
             <TextField
               id="outlined-basic"
@@ -112,19 +120,32 @@ export default function RegisterPage(props) {
                 Password should be at least 6 characters
               </p>
             ) : (
-              <p></p>
-            )}
+                <p></p>
+              )}
             <p className="error">
               {auth.error === "2" && "The email address is already exist"}
             </p>
-            <ColorButton
-              variant="contained"
-              color="primary"
-              className="customButton"
-              type="submit"
-            >
-              Resgister
+            {
+              !auth.authenticating ?
+                <ColorButton
+                  variant="contained"
+                  color="primary"
+                  className="customButton"
+                  type="submit"
+                >
+                  Resgister
             </ColorButton>
+                :
+                <div style={{ height: '80%', display: 'flex' }}>
+                  <MoonLoader
+                    css={override}
+                    size={45}
+                    color={"#293d3d"}
+                    loading={true}
+                  />
+                </div>
+            }
+
             {/* <Link to="/dialogbox">Users</Link> */}
           </form>
         </div>

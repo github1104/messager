@@ -1,6 +1,14 @@
+.container {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 60px);
+    justify-content: center;
+    background: #373c4d;
+}
+
 .wrapAvatar {
-    background-color: grey;
-    height: 30%;
+    background-color: #314752;
+    height: 25%;
     justify-content: center;
     align-items: flex-end;
     display: flex;
@@ -11,8 +19,9 @@
 
 }
 .avatar {
-    position: relative;
-    top: 2em;
+    position: absolute;
+    top: 1em;
+    z-index: 10;
 }
 .avtImg {
     width:120px;
@@ -25,15 +34,23 @@
     background-size: cover;
 }
 .wrapInfoUser {
-    margin-top: 2em;
+    position: absolute;
+    height: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+.wrapInfoUser hr {
+    background:#363944 ;
+}
 .infoUser {
-    height: 15em;
-    width: 60%;
-    
+    position: absolute;
+    top:2em;
+    height: 60%;
+    width: 50%;
+    /* background: #56607c; */
+    border-radius: 10%;
 }
 .follow {
     display: flex;
@@ -48,9 +65,13 @@
     font-weight: bold;
 }
 .labelRight {
-    padding-left: 1em;
     width: 60%;
+}
+.labelRight input{
+    padding-left: 1em;
+    width: 80%;
     text-align: left;
+    color: black;
 }
 
 .bottom {
@@ -58,6 +79,9 @@
 }
 .cardProfile{
     position: relative;
+    width: 70%;
+    height: 80vh;
+    margin-top: 2em;
 }
 .btnSave {
     width: 200px;

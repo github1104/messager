@@ -8,7 +8,9 @@ import ImageIcon from '@material-ui/icons/Image';
 import SendIcon from '@material-ui/icons/Send';
 import ListUser from '../../components/ListUser';
 import * as Scroll from 'react-scroll';
-import { userConstants } from '../../actions/constants';
+import { css } from "@emotion/core";
+import { MoonLoader } from "react-spinners";
+// import { userConstants } from '../../actions/constants';
 
 const HomePage = (props) => {
   const dispatch = useDispatch();
@@ -21,9 +23,15 @@ const HomePage = (props) => {
   const [userUid, setUserUid] = useState(null);
   const [image, setImage] = useState(null);
   const [previewImg, setPreImg] = useState(null);
-  const [isImageLoaded, setIsLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const override = css`;
 
+    display: block;
+    margin: auto;
+    border-color: red;
+  `;
   let unsubcribe;
+  let unsubMsg;
   let scroll = Scroll.animateScroll;
 
   useEffect(() => {
@@ -31,31 +39,52 @@ const HomePage = (props) => {
     if (auth) {
       unsubcribe = dispatch(getRealtimeUsers(auth.uid))
     }
-
-  }, []);
-
-  useEffect(() => {
-    if (chatStarted) {
-      scrollToBottom()
-    }
-  }, [user])
-
-  //componentWillUnmount
-  useEffect(() => {
     return () => {
       if (unsubcribe) {
-        console.log(48);
+        // console.log('unsubcribe',unsubcribe);
         unsubcribe.then((f) => f())
           .catch((error) => console.log(error));
       }
     }
   }, []);
 
+  useEffect(() => {
+    if (userUid) {
+
+      unsubMsg = dispatch(getRealtimeConversations({ uid_1: auth.uid, uid_2: userUid }))
+    }
+    return () => {
+      if (unsubMsg) {
+
+        unsubMsg.then((f) => f())
+          .catch((error) => console.log(error));
+      }
+    }
+  }, [userUid]);
+
+
+  useEffect(() => {
+    if (chatStarted) {
+      let time = setTimeout(() => scrollToBottom(), 1200)
+      return () => {
+        clearTimeout(time)
+      }
+    }
+  }, [user.conversations])
+
+
+
+
   const initChat = (user) => {
     setChatStarted(true);
     setChatUser(user.nameUser);
     setUserUid(user.uid);
-    dispatch(getRealtimeConversations({ uid_1: auth.uid, uid_2: user.uid }))
+    if (unsubMsg) {
+      console.log('unsubmsg')
+      unsubMsg.then((f) => f())
+        .catch((error) => console.log(error));
+    }
+
   }
 
   const submitMessage = (e) => {
@@ -72,11 +101,11 @@ const HomePage = (props) => {
         isView: false,
         createdAt: new Date()
       }
-      let conversations = [...user.conversations, msgObject]
-      dispatch({
-        type: userConstants.ADD_REALTIME_MESSAGES,
-        payload: { conversations }
-      })
+      // let conversations = [...user.conversations, msgObject]
+      // dispatch({
+      //   type: userConstants.ADD_REALTIME_MESSAGES,
+      //   payload: { conversations }
+      // })
       dispatch(updateMessage(msgObject));
 
     }
@@ -118,11 +147,11 @@ const HomePage = (props) => {
               isView: false,
               createdAt: new Date()
             };
-            let conversations = [...user.conversations, msgObject]
-            dispatch({
-              type: userConstants.ADD_REALTIME_MESSAGES,
-              payload: { conversations }
-            })
+            // let conversations = [...user.conversations, msgObject]
+            // dispatch({
+            //   type: userConstants.ADD_REALTIME_MESSAGES,
+            //   payload: { conversations }
+            // })
             dispatch(updateMessage(msgObject));
           });
       }
@@ -133,7 +162,6 @@ const HomePage = (props) => {
       behavior: "smooth",
       block: "start",
     });
-    console.log('scroll')
   };
 
   const hiddenFileInput = React.useRef(null);
@@ -147,13 +175,22 @@ const HomePage = (props) => {
             ? user.users.map((user) => {
               return (
                 <div onClick={() => initChat(user)} key={user.uid}>
-                  <ListUser name={user.nameUser} isOnline={user.isOnline} avatar={require('../../public/iconUser.png')}
-                    style={{ background: '#3B4257', color: 'white' }}
-                  />
+                  <ListUser name={user.nameUser} isOnline={user.isOnline}
+                    avatar={user.avatar} />
                 </div>
               );
             })
-            : null}
+            :
+            <div style={{ height: '80%', display: 'flex' }}>
+              <MoonLoader
+                css={override}
+                size={150}
+                color={"#ccc"}
+                loading={true}
+              />
+            </div>
+
+          }
         </div>
         {chatStarted ?
           <div className="chatArea">
@@ -162,20 +199,28 @@ const HomePage = (props) => {
             </div>
             <div className="messageSections">
               {
-                user.conversations.map(con =>
-                  <div
-                    style={{ textAlign: con.user_uid_1 == auth.uid ? 'right' : 'left' }}
-                  >
-                    {con.url &&
-                      <div className="imageChat">
-                        <img
-                          src={con.url}
-                        />
-                      </div>}
-                    {con.message && <p className={con.user_uid_1 == auth.uid ? "messageStyleAuth" : "messageStyleUser"} >{con.message}</p>}
+                user.conversations.length > 0 ?
+                  user.conversations.map(con =>
+                    <div
+                      style={{ textAlign: con.user_uid_1 == auth.uid ? 'right' : 'left' }}
+                    >
+                      {con.url &&
+                        <div className="imageChat">
+                          <img
+                            src={con.url}
+                          />
+                        </div>}
+                      {con.message && <p className={con.user_uid_1 == auth.uid ? "messageStyleAuth" : "messageStyleUser"} >{con.message}</p>}
 
-                  </div>
-                )
+                    </div>
+                  )
+                  :
+           
+                    <div className="defaultAreaChat">
+                      <img src={require('../../public/chat.png')}></img>
+                      <h1 style={{color:'#ccc'}}>Let's chat!</h1>
+                    </div>
+             
               }
               <div ref={bottomRef}></div>
             </div>

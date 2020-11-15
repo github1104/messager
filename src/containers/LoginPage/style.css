@@ -1,16 +1,24 @@
-.LoginBox {
+.LoginBox1 {
+    display: flex;
     position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    width: 100%;
+    height: calc(100% - 60px);
+    background: #3B4257;
+    justify-content: center;
+    overflow-x: hidden;
+    color: white;
 }
 
 .LoginForm {
+    width: 16em;
+    height: 25em;
     display: flex;
     flex-direction: column;
     border: 1px solid #508ac9;
     border-radius: 10px;
     padding: 10px;
+    background: linear-gradient(to bottom, #33cccc 0%,#ffffff 100%);
+    margin-top: 4em;
 }
 .error {
     color: red;

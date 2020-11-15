@@ -14,7 +14,7 @@ const ListUser = (props) => {
     <ListItem
       button
       alignItems="flex-start"
-      {...props}
+      style={{ background: '#3B4257', color: 'white' }}
     >
       <ListItemAvatar>
         <Avatar alt="avatar" src={props.avatar} />

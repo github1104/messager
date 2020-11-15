@@ -25,12 +25,14 @@ export const signup = (user) => {
                 uid: data.user.uid,
                 createAt: new Date(),
                 isOnline: true,
+                avatar: null
               })
               .then(() => {
                 const loggedInUser = {
                   nameUser: user.nameUser,
                   uid: data.user.uid,
                   email: user.email,
+                  avatar: null
                 };
                 localStorage.setItem("user", JSON.stringify(loggedInUser));
                 console.log("User logged in successfully ...");
@@ -62,28 +64,24 @@ export const signin = (user) => {
     auth()
       .signInWithEmailAndPassword(user.email, user.password)
       .then((data) => {
-        console.log(data);
 
-        const db = firestore();
-        db.collection("users")
-          .doc(data.user.uid)
-          .update({
+        const user = firestore().collection("users").doc(data.user.uid);
+        user.update({
             isOnline: true,
           })
           .then(() => {
-            const userName = data.user.displayName;
-            const loggedInUser = {
-              nameUser: userName,
-              uid: data.user.uid,
-              email: user.email,
-            };
+            user.get()
+            .then((doc)=>{
+              let auth = doc.data()
+              console.log(74,auth)
+              localStorage.setItem("user", JSON.stringify(auth));
 
-            localStorage.setItem("user", JSON.stringify(loggedInUser));
+              dispatch({
+                type: `${authConstanst.USER_LOGIN}_SUCCESS`,
+                payload: { user: auth },
+              });
+            })
 
-            dispatch({
-              type: `${authConstanst.USER_LOGIN}_SUCCESS`,
-              payload: { user: loggedInUser },
-            });
           })
           .catch((error) => {
             console.log(error);

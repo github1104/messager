@@ -38,7 +38,9 @@ const Header = (props) => {
                 <ul className="menu">
                     <Link to={'/Info'} style={{ textDecoration: 'none' }}>
                         <div style={{color: '#fff', fontWeight: 'bold', display: 'flex'}}>
-                            <Avatar alt="avatar" style={{ bottom: '6px', marginRight: '6px' }} />
+                            <Avatar alt="avatar" style={{ bottom: '6px', marginRight: '6px' }} 
+                                src={auth.avatar}
+                            />
                             <div >{auth.nameUser}</div>
                         </div>
                     </Link>

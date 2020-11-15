@@ -120,6 +120,9 @@ input {
   position: relative;
   top: 40px;
 }
+.messageSections ::-webkit-scrollbar{
+  display: none;
+}
 
 .imageChat img{
   max-width: 300px;

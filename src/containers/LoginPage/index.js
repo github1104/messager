@@ -9,6 +9,8 @@ import Layout from "../../components/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { signin, isLoggedInUser } from "../../actions";
 import { useForm } from "react-hook-form";
+import { css } from "@emotion/core";
+import { MoonLoader } from "react-spinners";
 
 export default function Login(props) {
   const [email, setEmail] = useState("");
@@ -22,6 +24,11 @@ export default function Login(props) {
     console.log(24, auth.error);
   };
 
+  const override = css`
+  display: block;
+  margin: auto;
+  border-color: red;
+ `;
   useEffect(() => {
     // if(!auth.authenticated){
     //   dispatch(isLoggedInUser())
@@ -39,13 +46,6 @@ export default function Login(props) {
     },
   }))(Button);
 
-  // const login = (event) => {
-  //   console.log(auth)
-  //   event.preventDefault();
-  //   dispatch(signin({email,password}));
-
-  //   // props.history.push(`/HomePage/${nameUser}`);
-  // };
 
   if (auth.authenticated) {
     return <Redirect to="/" />;
@@ -54,8 +54,8 @@ export default function Login(props) {
   return (
     <Layout>
       <Router>
-        <div className="LoginBox">
-          <form className="LoginForm" onSubmit={handleSubmit(onSubmit)}>
+        <div className="LoginBox1">
+          <form className="LoginForm" >
             <h2>Chat for fun</h2>
             <TextField
               id="outlined-basic"
@@ -65,6 +65,7 @@ export default function Login(props) {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               style={{ marginBottom: "30px" }}
+              autoComplete="off"
             />
             <TextField
               id="outlined-basic"
@@ -79,16 +80,44 @@ export default function Login(props) {
             <p className="error">
               {auth.error === "1" && "email or password is invalid"}
             </p>
-            <ColorButton
-              variant="contained"
-              color="primary"
-              className="customButton"
-              type="submit"
-            >
-              Login
-            </ColorButton>
+            {
+              !auth.authenticating ?
+                <div style={{ display: 'contents' }}>
+                  <ColorButton
+                    variant="contained"
+                    color="primary"
+                    className="customButton"
+                    type="submit"
+                    onClick={() => onSubmit()}
+                  >
+                    Login
+              </ColorButton>
+                  <ColorButton
+                    variant="contained"
+                    color="primary"
+                    className="customButton"
+                    type="submit"
+                    style={{ marginTop: '5px' }}
+
+                  >
+                    Sign with Google
+              </ColorButton>
+                </div>
+                :
+                <div style={{ height: '80%', display: 'flex' }}>
+                  <MoonLoader
+                    css={override}
+                    size={45}
+                    color={"#293d3d"}
+                    loading={true}
+                  />
+                </div>
+            }
+
+
             {/* <Link to="/dialogbox">Users</Link> */}
           </form>
+
         </div>
       </Router>
     </Layout>
