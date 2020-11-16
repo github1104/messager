@@ -10,13 +10,16 @@ import Info from "./containers/Info";
 import PrivateRoute from "./components/PrivateRoute";
 import { useDispatch, useSelector } from "react-redux";
 import { isLoggedInUser } from "./actions/auth.actions";
-
+import ReactNotification from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
 function App() {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
+
     if (!auth.authenticated) {
+      console.log(19)
       dispatch(isLoggedInUser());
     }
   }, []);
@@ -24,10 +27,11 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <ReactNotification />
         <PrivateRoute path="/" exact component={HomePage} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={RegisterPage} />
-        <Route path="/Info" component={Info} />
+        <PrivateRoute path="/Info" component={Info} />
         {/* <Route path="/HomePage/:nameUser" component={HomePage} /> */}
       </div>
     </Router>

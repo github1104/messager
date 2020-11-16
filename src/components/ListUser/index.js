@@ -14,7 +14,7 @@ const ListUser = (props) => {
     <ListItem
       button
       alignItems="flex-start"
-      style={{ background: '#3B4257', color: 'white' }}
+      style={{ background: props.isReaded ? '#3B4257' : 'rgb(174 198 212)', color: 'white' }}
     >
       <ListItemAvatar>
         <Avatar alt="avatar" src={props.avatar} />
@@ -42,7 +42,7 @@ const ListUser = (props) => {
             textOverflow: "ellipsis",
           }}
         >
-          {props.context}
+          {!props.isReaded ? `${props.name} has sent you a message ` : null}
         </div>
       </div>
     </ListItem>

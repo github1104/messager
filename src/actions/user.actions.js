@@ -15,9 +15,12 @@ export const getRealtimeUsers = (uid) => {
             .onSnapshot((querySnapshot) => {
                 let users = [];
                 querySnapshot.forEach(function (doc) {
-
+                    let data = doc.data()
                     if (doc.data().uid !== uid) {
-                        users.push(doc.data());
+                        // let itReaded = isReaded({ uid_1: uid, uid_2: doc.data().uid })
+                        // .then((value)=> console.log(value))
+
+                        users.push(data);
                     } else {
 
                     }
@@ -50,8 +53,21 @@ export const updateMessage = (msgObj) => {
             .add(conversations)
             .then(() => {
                 // console.log(data)
+                const user = db.collection("users").doc(msgObj.user_uid_1);
+                user.update({
+                    isRead: firestore.FieldValue.arrayUnion({
+                        id: msgObj.user_uid_2,
+                        isReaded: false
+                    })
+                })
+                user.update({
+                    isRead: firestore.FieldValue.arrayRemove({
+                        id: msgObj.user_uid_2,
+                        isReaded: true
+                    })
+                })
                 //success
-
+                dispatch(Readed({uid_1: msgObj.user_uid_1,uid_2: msgObj.user_uid_2}))
             })
             .catch((error) => {
                 console.log(error)
@@ -85,7 +101,7 @@ export const updateUser = (uid, userObject) => {
             user = {
                 imageCover: urlCover
             }
-        } else{
+        } else {
             return
         }
 
@@ -162,6 +178,28 @@ export const getRealtimeConversations = (user) => {
             });
         return unsubcribe;
     }
+}
+
+
+export const Readed = (user) => {
+    return async (dispatch) => {
+        const db = firestore().collection("users").doc(user.uid_2);
+        db.update({
+            isRead: firestore.FieldValue.arrayUnion({
+                id: user.uid_1,
+                isReaded: true
+            })
+
+        })
+        db.update({
+            isRead: firestore.FieldValue.arrayRemove({
+                id: user.uid_1,
+                isReaded: false
+            })
+        })
+    }
+
+
 }
 
 export const upLoadImageUrl = (image) => {

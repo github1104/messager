@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './style.css';
 import Layout from '../../components/Layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRealtimeConversations, getRealtimeUsers, updateMessage } from '../../actions/user.actions';
+import { getRealtimeConversations, getRealtimeUsers, updateMessage, Readed } from '../../actions/user.actions';
 import { storage } from "firebase";
 import ImageIcon from '@material-ui/icons/Image';
 import SendIcon from '@material-ui/icons/Send';
@@ -10,6 +10,8 @@ import ListUser from '../../components/ListUser';
 import * as Scroll from 'react-scroll';
 import { css } from "@emotion/core";
 import { MoonLoader } from "react-spinners";
+
+import { store } from 'react-notifications-component';
 // import { userConstants } from '../../actions/constants';
 
 const HomePage = (props) => {
@@ -17,13 +19,17 @@ const HomePage = (props) => {
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
 
+
   const [chatStarted, setChatStarted] = useState(false);
   const [chatUser, setChatUser] = useState("");
   const [message, setMessage] = useState("");
   const [userUid, setUserUid] = useState(null);
   const [image, setImage] = useState(null);
   const [previewImg, setPreImg] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [textSearch, setTextSearch] = useState("");
+  const [allowedNofi, setAllowed] = useState(true)
+
+  const users = useSelector((state) => state.user.users.filter((u) => u.nameUser.search(textSearch) > -1));
   const override = css`;
 
     display: block;
@@ -33,7 +39,7 @@ const HomePage = (props) => {
   let unsubcribe;
   let unsubMsg;
   let scroll = Scroll.animateScroll;
-
+  // remove listener from realtme database
   useEffect(() => {
     console.log(36, auth);
     if (auth) {
@@ -46,12 +52,13 @@ const HomePage = (props) => {
           .catch((error) => console.log(error));
       }
     }
-  }, []);
 
+  }, []);
+  //remove listener from realtme database
   useEffect(() => {
     if (userUid) {
-
       unsubMsg = dispatch(getRealtimeConversations({ uid_1: auth.uid, uid_2: userUid }))
+      dispatch(Readed({ uid_1: auth.uid, uid_2: userUid }))
     }
     return () => {
       if (unsubMsg) {
@@ -64,6 +71,7 @@ const HomePage = (props) => {
 
 
   useEffect(() => {
+
     if (chatStarted) {
       let time = setTimeout(() => scrollToBottom(), 1200)
       return () => {
@@ -72,18 +80,41 @@ const HomePage = (props) => {
     }
   }, [user.conversations])
 
+  useEffect(() => {
+    user.users.map((user) => {
+      if (user.isRead.length > 0 ) {
+        if (!user.isRead[0].isReaded && user.isRead[0].id === auth.uid && allowedNofi) {
+          store.addNotification({
+            title: "New message",
+            message: "You receive a new message ",
+            type: "default",
+            insert: "top",
+            container: "top-right",
+            animationIn: ["animate__animated", "animate__fadeIn"],
+            animationOut: ["animate__animated", "animate__fadeOut"],
+            dismiss: {
+              duration: 5000,
+              onScreen: true
+            }
+          });
 
-
+        }
+      }
+    })
+    setAllowed(true)
+  }, [user.users])
 
   const initChat = (user) => {
+
+    if (user.isRead.length > 0 && !user.isRead[0].isReaded && userUid) {
+      console.log(107)
+      setAllowed(false);
+      dispatch(Readed({ uid_1: auth.uid, uid_2: user.uid }))
+    }
     setChatStarted(true);
     setChatUser(user.nameUser);
     setUserUid(user.uid);
-    if (unsubMsg) {
-      console.log('unsubmsg')
-      unsubMsg.then((f) => f())
-        .catch((error) => console.log(error));
-    }
+   
 
   }
 
@@ -157,6 +188,11 @@ const HomePage = (props) => {
       }
     )
   }
+
+  const searchHandle = (e) => {
+    setTextSearch(e.target.value);
+
+  }
   const scrollToBottom = () => {
     bottomRef.current.scrollIntoView({
       behavior: "smooth",
@@ -171,12 +207,19 @@ const HomePage = (props) => {
     <Layout>
       <section className="container">
         <div className="listOfUsers">
-          {user.users.length > 0
-            ? user.users.map((user) => {
+          <div className="wrapperSearch">
+            <div >
+              <img src={require('../../public/search.png')} ></img>
+            </div>
+            <input placeholder="Search " value={textSearch} onChange={(e) => searchHandle(e)} />
+          </div>
+          {users.length > 0
+            ? users.map((user) => {
+              let isReaded = user.isRead.length > 0 ? user.isRead[0].isReaded : true
               return (
                 <div onClick={() => initChat(user)} key={user.uid}>
                   <ListUser name={user.nameUser} isOnline={user.isOnline}
-                    avatar={user.avatar} />
+                    avatar={user.avatar} isReaded={isReaded} />
                 </div>
               );
             })
@@ -215,12 +258,12 @@ const HomePage = (props) => {
                     </div>
                   )
                   :
-           
-                    <div className="defaultAreaChat">
-                      <img src={require('../../public/chat.png')}></img>
-                      <h1 style={{color:'#ccc'}}>Let's chat!</h1>
-                    </div>
-             
+
+                  <div className="defaultAreaChat">
+                    <img src={require('../../public/chat.png')}></img>
+                    <h1 style={{ color: '#ccc' }}>Let's chat!</h1>
+                  </div>
+
               }
               <div ref={bottomRef}></div>
             </div>
