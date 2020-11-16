@@ -42,6 +42,7 @@ const HomePage = (props) => {
   // remove listener from realtme database
   useEffect(() => {
     console.log(36, auth);
+    audioRef.current.play();
     if (auth) {
       unsubcribe = dispatch(getRealtimeUsers(auth.uid))
     }
@@ -57,6 +58,7 @@ const HomePage = (props) => {
   //remove listener from realtme database
   useEffect(() => {
     if (userUid) {
+      console.log(60)
       unsubMsg = dispatch(getRealtimeConversations({ uid_1: auth.uid, uid_2: userUid }))
       dispatch(Readed({ uid_1: auth.uid, uid_2: userUid }))
     }
@@ -71,50 +73,45 @@ const HomePage = (props) => {
 
 
   useEffect(() => {
-
+    
     if (chatStarted) {
       let time = setTimeout(() => scrollToBottom(), 1200)
+      if(user.conversations[user.conversations.length-1].user_uid_1 !== auth.uid)
+      audioRef.current.play();
       return () => {
         clearTimeout(time)
       }
     }
+
   }, [user.conversations])
 
-  useEffect(() => {
-    user.users.map((user) => {
-      if (user.isRead.length > 0 ) {
-        if (!user.isRead[0].isReaded && user.isRead[0].id === auth.uid && allowedNofi) {
-          store.addNotification({
-            title: "New message",
-            message: "You receive a new message ",
-            type: "default",
-            insert: "top",
-            container: "top-right",
-            animationIn: ["animate__animated", "animate__fadeIn"],
-            animationOut: ["animate__animated", "animate__fadeOut"],
-            dismiss: {
-              duration: 5000,
-              onScreen: true
-            }
-          });
 
-        }
-      }
-    })
-    setAllowed(true)
-  }, [user.users])
+  // useEffect(()=>{
+  //   console.log(user.users)
+  //   user.users.map((u)=>{
+  //     if(u.isRead.length >0){
+  //       u.isRead.map((user)=>{
+  //          ( user.id === auth.uid && !user.isReaded )
+  //       })
+  //     }
+  //   })
+  // },[user.users])
 
   const initChat = (user) => {
 
-    if (user.isRead.length > 0 && !user.isRead[0].isReaded && userUid) {
-      console.log(107)
-      setAllowed(false);
-      dispatch(Readed({ uid_1: auth.uid, uid_2: user.uid }))
+    if (user.isRead.length > 0) {
+      user.isRead.map((u) => {
+        if (u.id === auth.uid && !u.isReaded) {
+          console.log(107, u)
+          dispatch(Readed({ uid_1: u.id, uid_2: user.uid}))
+        }
+
+      })
     }
     setChatStarted(true);
     setChatUser(user.nameUser);
     setUserUid(user.uid);
-   
+
 
   }
 
@@ -193,6 +190,13 @@ const HomePage = (props) => {
     setTextSearch(e.target.value);
 
   }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      console.log('press enter');
+      submitMessage()
+    }
+  }
   const scrollToBottom = () => {
     bottomRef.current.scrollIntoView({
       behavior: "smooth",
@@ -202,7 +206,7 @@ const HomePage = (props) => {
 
   const hiddenFileInput = React.useRef(null);
   const bottomRef = React.useRef(null);
-
+  const audioRef = React.useRef(null);
   return (
     <Layout>
       <section className="container">
@@ -215,7 +219,12 @@ const HomePage = (props) => {
           </div>
           {users.length > 0
             ? users.map((user) => {
-              let isReaded = user.isRead.length > 0 ? user.isRead[0].isReaded : true
+              let isReaded = true
+              if (user.isRead.length > 0) {
+                user.isRead.map((u) => {
+                  if (u.id === auth.uid) isReaded = u.isReaded
+                })
+              }
               return (
                 <div onClick={() => initChat(user)} key={user.uid}>
                   <ListUser name={user.nameUser} isOnline={user.isOnline}
@@ -290,6 +299,7 @@ const HomePage = (props) => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="write message"
+                onKeyDown={(e)=>handleKeyDown(e)}
               />
               <input
                 ref={hiddenFileInput}
@@ -323,7 +333,12 @@ const HomePage = (props) => {
           </div>
 
         }
+        <audio    
+            ref={audioRef}
+            src={require('../../public/audio/messenger.mp3')}
 
+        >
+        </audio>
       </section>
     </Layout>
   );

@@ -190,7 +190,7 @@ export const Readed = (user) => {
                 isReaded: true
             })
 
-        })
+        }).then('ok')
         db.update({
             isRead: firestore.FieldValue.arrayRemove({
                 id: user.uid_1,

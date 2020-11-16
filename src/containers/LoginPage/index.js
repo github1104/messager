@@ -21,6 +21,7 @@ export default function Login(props) {
 
   const onSubmit = (data) => {
     dispatch(signin({ email, password }));
+    
     console.log(24, auth.error);
   };
 

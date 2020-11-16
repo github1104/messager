@@ -1,5 +1,6 @@
 import { auth, firestore } from "firebase";
 import { authConstanst } from "./constants";
+import { store } from 'react-notifications-component';
 export const signup = (user) => {
   return async (dispatch) => {
     const db = firestore();
@@ -37,6 +38,22 @@ export const signup = (user) => {
                 };
                 localStorage.setItem("user", JSON.stringify(loggedInUser));
                 console.log("User logged in successfully ...");
+                
+
+                store.addNotification({
+                  title: "Nofication ",
+                  message: "Login success",
+                  type: "success",
+                  insert: "top",
+                  container: "top-right",
+                  animationIn: ["animate__animated", "animate__fadeIn"],
+                  animationOut: ["animate__animated", "animate__fadeOut"],
+                  dismiss: {
+                    duration: 5000,
+                    onScreen: true
+                  }
+                })
+
                 dispatch({
                   type: `${authConstanst.USER_LOGIN}_SUCCESS`,
                   payload: { user: loggedInUser },
@@ -76,6 +93,20 @@ export const signin = (user) => {
               let auth = doc.data()
               console.log(74,auth)
               localStorage.setItem("user", JSON.stringify(auth));
+
+                  store.addNotification({
+                  title: "Nofication ",
+                  message: "Login success",
+                  type: "success",
+                  insert: "top",
+                  container: "top-right",
+                  animationIn: ["animate__animated", "animate__fadeIn"],
+                  animationOut: ["animate__animated", "animate__fadeOut"],
+                  dismiss: {
+                    duration: 5000,
+                    onScreen: true
+                  }
+                })
 
               dispatch({
                 type: `${authConstanst.USER_LOGIN}_SUCCESS`,
@@ -136,6 +167,21 @@ export const logout = (uid) => {
           .signOut()
           .then(() => {
             localStorage.clear();
+
+            store.addNotification({
+              title: "Nofication ",
+              message: "Log out success",
+              type: "warning",
+              insert: "top",
+              container: "top-right",
+              animationIn: ["animate__animated", "animate__fadeIn"],
+              animationOut: ["animate__animated", "animate__fadeOut"],
+              dismiss: {
+                duration: 5000,
+                onScreen: true
+              }
+            })
+
             dispatch({ type: `${authConstanst.USER_LOGOUT}_SUCCESS` });
           })
           .catch((error) => {
