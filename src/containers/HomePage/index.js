@@ -3,6 +3,7 @@ import './style.css';
 import Layout from '../../components/Layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRealtimeConversations, getRealtimeUsers, updateMessage, Readed } from '../../actions/user.actions';
+import { setOnOff } from '../../actions'
 import { storage } from "firebase";
 import ImageIcon from '@material-ui/icons/Image';
 import SendIcon from '@material-ui/icons/Send';
@@ -18,7 +19,7 @@ const HomePage = (props) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
-
+  const userLocal = JSON.parse(localStorage.getItem("user"))
 
   const [chatStarted, setChatStarted] = useState(false);
   const [chatUser, setChatUser] = useState("");
@@ -28,6 +29,7 @@ const HomePage = (props) => {
   const [previewImg, setPreImg] = useState(null);
   const [textSearch, setTextSearch] = useState("");
   const [allowedNofi, setAllowed] = useState(true)
+  
 
   const users = useSelector((state) => state.user.users.filter((u) => u.nameUser.search(textSearch) > -1));
   const override = css`;
@@ -44,6 +46,14 @@ const HomePage = (props) => {
     console.log(36, auth);
     audioRef.current.play();
     if (auth) {
+      window.addEventListener("beforeunload", (e) => {
+        console.log(48, 'log out')
+        dispatch(setOnOff(auth.uid, false));
+      })
+      window.addEventListener('unload', function (event) {
+        console.log(53, 'log out')
+        dispatch(setOnOff(auth.uid, false));
+      });
       unsubcribe = dispatch(getRealtimeUsers(auth.uid))
     }
     return () => {
@@ -76,7 +86,7 @@ const HomePage = (props) => {
     
     if (chatStarted) {
       let time = setTimeout(() => scrollToBottom(), 1200)
-      if(user.conversations[user.conversations.length-1].user_uid_1 !== auth.uid)
+      if(user.conversations.length >0 && user.conversations[user.conversations.length-1].user_uid_1 !== auth.uid)
       audioRef.current.play();
       return () => {
         clearTimeout(time)
@@ -85,17 +95,11 @@ const HomePage = (props) => {
 
   }, [user.conversations])
 
-
-  // useEffect(()=>{
-  //   console.log(user.users)
-  //   user.users.map((u)=>{
-  //     if(u.isRead.length >0){
-  //       u.isRead.map((user)=>{
-  //          ( user.id === auth.uid && !user.isReaded )
-  //       })
-  //     }
-  //   })
-  // },[user.users])
+  
+  useEffect(()=>{
+    // console.log(91,userLocal)
+   
+  },[userLocal])
 
   const initChat = (user) => {
 

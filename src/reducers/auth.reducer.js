@@ -21,7 +21,7 @@ export default (state = initState, action) => {
         ...state,
         ...action.payload.user,
         authenticated: true,
-        authenticating: false,
+        authenticating: false
       };
       break;
     case `${authConstanst.USER_LOGIN}_FAILURE`:

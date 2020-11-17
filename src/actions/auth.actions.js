@@ -137,7 +137,9 @@ export const isLoggedInUser = () => {
       : null;
 
     if (user) {
-      dispatch({
+      user.isOnline = true
+      dispatch(setOnOff(user.uid,true))
+      dispatch({  
         type: `${authConstanst.USER_LOGIN}_SUCCESS`,
         payload: { user },
       });
@@ -197,3 +199,18 @@ export const logout = (uid) => {
       });
   };
 };
+
+export const setOnOff = (uid,status) => {
+  return async (dispatch)=>{
+
+    const user = firestore().collection("users").doc(uid);
+    user
+    .update({
+      isOnline: status,
+    })
+    .then(()=>{
+
+    })
+
+  }
+}

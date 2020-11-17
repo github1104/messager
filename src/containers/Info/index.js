@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import { Container, Card, Button, IconButton, Avatar } from '@material-ui/core';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import './style.css';
-import { upLoadImageUrl, updateUser } from '../../actions/user.actions';
+import { updateUser ,setOnOff} from '../../actions';
 import defaultAvt from '../../public/iconUser.png'
 import { css } from "@emotion/core";
 import { MoonLoader } from "react-spinners";
@@ -33,6 +32,17 @@ const Info = () => {
             clearTimeout(time)
         }
     },[loading])
+
+    useEffect(() => {
+        window.addEventListener("beforeunload", (e) => {
+            console.log(48, 'log out')
+            dispatch(setOnOff(auth.uid, false));
+          })
+          window.addEventListener('unload', function (event) {
+            console.log(53, 'log out')
+            dispatch(setOnOff(auth.uid, false));
+          });
+    }, [])
     const override = css`
     display: block;
     margin: auto;

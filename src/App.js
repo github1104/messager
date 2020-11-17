@@ -22,6 +22,7 @@ function App() {
       console.log(19)
       dispatch(isLoggedInUser());
     }
+
   }, []);
 
   return (

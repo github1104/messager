@@ -3,12 +3,19 @@
     position: absolute;
     width: 100%;
     height: calc(100% - 60px);
-    background: #3B4257;
+    /* background: #ffffff; */
     justify-content: center;
     overflow-x: hidden;
     color: white;
 }
-
+.myVideo {
+    position: fixed;
+    right: 0;
+    top:60px;
+    min-width: 100%;
+    min-height: 100%;
+    opacity: 1;
+}
 .LoginForm {
     width: 16em;
     height: 25em;
@@ -19,6 +26,8 @@
     padding: 10px;
     background: linear-gradient(to bottom, #33cccc 0%,#ffffff 100%);
     margin-top: 4em;
+    box-shadow: 5px 5px 13px 4px rgba(80, 77, 95, 0.79);
+    z-index: 1;
 }
 .error {
     color: red;

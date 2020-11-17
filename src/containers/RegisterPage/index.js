@@ -64,6 +64,9 @@ export default function RegisterPage(props) {
     <Layout>
       <Router>
         <div className="LoginBox">
+          <video autoPlay muted loop className="myVideo">
+            <source src={require('../../public/audio/ad.mp4')} type="video/mp4" />
+          </video>
           <form className="LoginForm" onSubmit={handleSubmit(onSubmit)}>
             <h2>Chat for fun</h2>
             <TextField

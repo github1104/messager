@@ -22,7 +22,16 @@ export const getRealtimeUsers = (uid) => {
 
                         users.push(data);
                     } else {
-
+                        // let user = JSON.parse(localStorage.getItem("user"))
+                        // let userNew = {
+                        //     ...user,
+                        //     data
+                        // }
+                        // if(user !== userNew){
+                        //     localStorage.setItem("user", JSON.stringify(user));
+                        //     console.log(data,userNew,user)
+                        // }
+                        
                     }
 
                 });
@@ -116,20 +125,23 @@ export const updateUser = (uid, userObject) => {
                         avatar: urlAvt,
                         imageCover: urlCover
                     }
+                    localStorage.setItem("user", JSON.stringify(user));
                 }
-                else if (urlAvt) {
+                else if (urlAvt ) {
                     user = {
                         ...user,
                         avatar: urlAvt,
                     }
+                    localStorage.setItem("user", JSON.stringify(user));
                 }
                 else if (urlCover) {
                     user = {
                         ...user,
                         imageCover: urlCover
                     }
+                    localStorage.setItem("user", JSON.stringify(user));
                 }
-                localStorage.setItem("user", JSON.stringify(user));
+               
                 dispatch({
                     type: `${authConstanst.USER_LOGIN}_SUCCESS`,
                     payload: { user },

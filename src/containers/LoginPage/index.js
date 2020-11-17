@@ -21,7 +21,7 @@ export default function Login(props) {
 
   const onSubmit = (data) => {
     dispatch(signin({ email, password }));
-    
+
     console.log(24, auth.error);
   };
 
@@ -56,68 +56,71 @@ export default function Login(props) {
     <Layout>
       <Router>
         <div className="LoginBox1">
-          <form className="LoginForm" >
-            <h2>Chat for fun</h2>
-            <TextField
-              id="outlined-basic"
-              label="Email"
-              name="email"
-              variant="outlined"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              style={{ marginBottom: "30px" }}
-              autoComplete="off"
-            />
-            <TextField
-              id="outlined-basic"
-              name="password"
-              label="Password"
-              variant="outlined"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              style={{ marginBottom: "30px" }}
-              type="password"
-            />
-            <p className="error">
-              {auth.error === "1" && "email or password is invalid"}
-            </p>
-            {
-              !auth.authenticating ?
-                <div style={{ display: 'contents' }}>
-                  <ColorButton
-                    variant="contained"
-                    color="primary"
-                    className="customButton"
-                    type="submit"
-                    onClick={() => onSubmit()}
-                  >
-                    Login
+          <video autoPlay muted loop className="myVideo">
+            <source src={require('../../public/audio/ad.mp4')} type="video/mp4"/>
+          </video>
+            <form className="LoginForm" >
+              <h2>Chat for fun</h2>
+              <TextField
+                id="outlined-basic"
+                label="Email"
+                name="email"
+                variant="outlined"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                style={{ marginBottom: "30px" }}
+                autoComplete="off"
+              />
+              <TextField
+                id="outlined-basic"
+                name="password"
+                label="Password"
+                variant="outlined"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                style={{ marginBottom: "30px" }}
+                type="password"
+              />
+              <p className="error">
+                {auth.error === "1" && "email or password is invalid"}
+              </p>
+              {
+                !auth.authenticating ?
+                  <div style={{ display: 'contents' }}>
+                    <ColorButton
+                      variant="contained"
+                      color="primary"
+                      className="customButton"
+                      type="submit"
+                      onClick={() => onSubmit()}
+                    >
+                      Login
               </ColorButton>
-                  <ColorButton
-                    variant="contained"
-                    color="primary"
-                    className="customButton"
-                    type="submit"
-                    style={{ marginTop: '5px' }}
+                    <ColorButton
+                      variant="contained"
+                      color="primary"
+                      className="customButton"
+                      type="submit"
+                      style={{ marginTop: '5px' }}
 
-                  >
-                    Sign with Google
+                    >
+                      Sign with Google
               </ColorButton>
-                </div>
-                :
-                <div style={{ height: '80%', display: 'flex' }}>
-                  <MoonLoader
-                    css={override}
-                    size={45}
-                    color={"#293d3d"}
-                    loading={true}
-                  />
-                </div>
-            }
+                  </div>
+                  :
+                  <div style={{ height: '80%', display: 'flex' }}>
+                    <MoonLoader
+                      css={override}
+                      size={45}
+                      color={"#293d3d"}
+                      loading={true}
+                    />
+                  </div>
+              }
 
 
-            {/* <Link to="/dialogbox">Users</Link> */}
-          </form>
+              {/* <Link to="/dialogbox">Users</Link> */}
+            </form>
 
         </div>
       </Router>
